@@ -22,6 +22,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     private float fDeathTimer = 3;
     private bool bInWater = false;
     private bool bCarring = false;
+    private bool bJumping = false;
 
     [SerializeField]
     private GameObject g;
@@ -53,18 +54,21 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
             {
                 RangeAttack();
             }
+            if (Input.GetButtonDown("A" + iPlayerNum) && !bJumping)
+            {
+                //Jump
+                gameObject.GetComponent<Animator>().SetBool("bJump", true);
+                gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bJump", true);
+                bJumping = true;
+                StartCoroutine(WaitForJump());
+            }
         }
         else if (bStunned)
         {
             PassOut();
         }
-        else
-        {
-            if(Input.GetButtonDown("A" + iPlayerNum))
-            {
-                //Pick up object
-            }
-        }
+
+
         if(bInWater)
         {
             fDeathTimer -= Time.deltaTime;
@@ -84,6 +88,14 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
                 bCanRangeAttack = true;
             }
         }
+    }
+
+    private IEnumerator WaitForJump()
+    {
+        yield return new WaitForSeconds(1f);
+        bJumping = false;
+        gameObject.GetComponent<Animator>().SetBool("bJump", false);
+        gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bJump", false);
     }
 
     private void ResetPlayer()
