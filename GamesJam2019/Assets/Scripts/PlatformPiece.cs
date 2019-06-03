@@ -4,18 +4,59 @@ using UnityEngine;
 
 public class PlatformPiece : MonoBehaviour
 {
-    public int healthToAdd;
-    public GameObject itemPrefab;
-    public AudioClip attachAudio;
-    public GameObject attachParticleSystem;
-    public GameObject lingerParticleSystem;
+    [SerializeField] private int healthToAdd;
+    [SerializeField] private GameObject itemPrefab;
+    [SerializeField] private AudioClip attachAudio;
+    [SerializeField] private GameObject attachParticleSystem;
+    [SerializeField] private GameObject lingerParticleSystem;
 
-    public void Initialise(GameObject a_spawnerPosition)
+
+    private AudioSource audioSource;
+    private Rigidbody rigBody;
+
+    private void Awake()
     {
-        GameObject newObj = Instantiate(itemPrefab);
-        newObj.transform.parent = a_spawnerPosition.transform;
-        newObj.transform.localPosition = Vector3.zero;
+        lingerParticleSystem.SetActive(true);
+        attachParticleSystem.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
+        rigBody = GetComponent<Rigidbody>();
 
-        
+        audioSource.clip = attachAudio;
+    }
+
+    public void PickUp(GameObject a_pickUpPosition)
+    {
+        // Parent the pickup to the position passed though
+        gameObject.transform.parent = a_pickUpPosition.transform;
+
+        // Disable the lingering particle effect
+        lingerParticleSystem.SetActive(false);
+
+        // Disable the RBody
+        rigBody.isKinematic = false;
+    }
+
+    public void AttachToPlatform()
+    {
+        attachParticleSystem.SetActive(true);
+        audioSource.PlayOneShot(attachAudio);
+
+        StartCoroutine(DestroyObject());
+    }
+
+    IEnumerator DestroyObject()
+    {
+        while(audioSource.isPlaying)
+        {
+            yield return null; 
+        }
+
+        Destroy(gameObject);
+    }
+
+    public void Drop()
+    {
+        gameObject.transform.parent = null;
+        rigBody.isKinematic = false;
     }
 }
