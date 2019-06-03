@@ -14,6 +14,9 @@ public class CS_AIProjectile : MonoBehaviour
     [SerializeField]
     private float m_fDamage;
 
+    [SerializeField]
+    private float m_fLifeTime = 2.0f;
+
     private Rigidbody m_rbRigidBodyRef;
 
     // Start is called before the first frame update
@@ -49,5 +52,9 @@ public class CS_AIProjectile : MonoBehaviour
         m_tTarget = a_tTarget;
         transform.LookAt(m_tTarget);
         m_fDamage = a_fDamage;
+
+        m_fSpeed = Vector3.Distance(a_tTarget.position, transform.position) * 2.0f;
+
+        Destroy(gameObject, m_fLifeTime);
     }
 }

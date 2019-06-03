@@ -11,8 +11,12 @@ public class CS_AIBasicSkeleton : CS_AIBase
         {
             DeathSequence();
         }
-        UpdateAttackDelay();
-        AttackTarget();
+
+        if (!TargetNullCheck())
+        {
+            UpdateAttackDelay();
+            AttackTarget();
+        }
     }
 
 

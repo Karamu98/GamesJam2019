@@ -12,7 +12,7 @@ public class CS_AIBase : MonoBehaviour
     private float m_fCurrentHealth;    
 
     [SerializeField]
-    private float m_fAttackRange;
+    public float m_fAttackRange;
 
     [SerializeField]
     private float m_fDamageDealtPerHit;
@@ -23,10 +23,10 @@ public class CS_AIBase : MonoBehaviour
 
 
 
-    [SerializeField]
     private List<GameObject> m_lgoAttackableObjects;
 
-    private NavMeshAgent m_nmaNavAgent;
+    [HideInInspector]
+    public NavMeshAgent m_nmaNavAgent;
 
     private Transform m_tTarget;
     private void Start()
@@ -44,7 +44,24 @@ public class CS_AIBase : MonoBehaviour
 
     public void ChooseNewTarget()
     {
-        SetTarget(GetClosestAttackableObject());
+        int iRandom = Random.Range(0, 2);
+        if(iRandom == 0)
+        {
+            SetTarget(FindObjectOfType<PlayerPlatform>().gameObject.transform);
+        }
+        else
+        {
+            Transform tPlayer = GetClosestPlayerObject();
+            if (tPlayer != null && tPlayer != transform)
+            {
+                SetTarget(tPlayer);
+            }
+            else
+            {
+                ChooseNewTarget();
+            }
+        }
+        //SetTarget(GetClosestAttackableObject());
     }
 
     private void GetTargets()
@@ -80,6 +97,28 @@ public class CS_AIBase : MonoBehaviour
         return tClosestTarget;
     }
 
+    private Transform GetClosestPlayerObject()
+    {
+        CS_PlayerController[] m_lcsPlayers = FindObjectsOfType<CS_PlayerController>();
+        Transform tClosestTarget = transform;
+        foreach (CS_PlayerController csObject in m_lcsPlayers)
+        {
+            if (tClosestTarget == transform)
+            {
+                tClosestTarget = csObject.transform;
+            }
+            else
+            {
+                if (Vector3.Distance(csObject.transform.position, transform.position) <=
+                    Vector3.Distance(tClosestTarget.position, transform.position))
+                {
+                    tClosestTarget = csObject.transform;
+                }
+            }
+        }
+        return tClosestTarget;
+    }
+
     public bool InAttackRange()
     {
         if(Vector3.Distance(transform.position, m_tTarget.position) <= m_fAttackRange)
@@ -94,10 +133,19 @@ public class CS_AIBase : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void MoveAgent()
+    public virtual void MoveAgent()
     {
-        m_nmaNavAgent.SetDestination(m_tTarget.position);
-        if(InAttackRange())
+        if(TargetNullCheck())
+        {
+            ChooseNewTarget();
+            return;
+        }
+        else
+        {
+            m_nmaNavAgent.SetDestination(m_tTarget.position);
+
+        }
+        if (InAttackRange())
         {
             m_nmaNavAgent.isStopped = true;
         }
@@ -135,10 +183,10 @@ public class CS_AIBase : MonoBehaviour
         m_fCurrentHealth = -1.0f;
     }
 
-    public void DamageAgent(float a_fDamage)
+    public void DamageAgent(float a_fDamage, GameObject m_goAttacker)
     {
         m_fCurrentHealth -= a_fDamage;
-        
+        SetTarget(m_goAttacker.transform);        
     }
 
 
@@ -177,7 +225,7 @@ public class CS_AIBase : MonoBehaviour
 
     public bool CanAgentAttack()
     {
-        if(AttackDelayCheck() && InAttackRange())
+        if(AttackDelayCheck() && InAttackRange() && !TargetNullCheck())
         {
             return true;
         }

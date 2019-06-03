@@ -18,15 +18,67 @@ public class CS_AIRangedSketon : CS_AIBase
             DeathSequence();
         }
 
-        UpdateAttackDelay();
-        AttackTarget();
+        if (!TargetNullCheck())
+        {
+            UpdateAttackDelay();
+            AttackTarget();
+        }
 
-        if(TargetNullCheck())
+    }
+
+
+    public override void MoveAgent()
+    {
+        if (TargetNullCheck())
         {
             ChooseNewTarget();
+            return;
+        }
+        else
+        {
+            GetToSafeDistance();
+        }
+        if (InAttackRange() && SafeDistanceCheck())
+        {
+            m_nmaNavAgent.isStopped = true;
+        }
+        else
+        {
+            m_nmaNavAgent.isStopped = false;
         }
     }
 
+    private void GetToSafeDistance()
+    {
+        if(InAttackRange())
+        {
+            if (!SafeDistanceCheck())
+            {
+                transform.LookAt(GetTargetRef());
+                Vector3 v3SafeTarget = -transform.forward * 10.0f;
+                m_nmaNavAgent.SetDestination(v3SafeTarget);
+            }
+            else
+            {
+                m_nmaNavAgent.SetDestination(GetTargetRef().position);
+
+            }
+        }
+        else
+        {
+            m_nmaNavAgent.SetDestination(GetTargetRef().position);
+
+        }
+    }
+
+    private bool SafeDistanceCheck()
+    {
+        if(Vector3.Distance(transform.position, GetTargetRef().position) <= (m_fAttackRange / 2))
+        {
+            return false;
+        }
+        return true;
+    }
 
     private void AttackTarget()
     {
