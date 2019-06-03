@@ -4,12 +4,28 @@ using UnityEngine;
 
 public class CS_AIBasicSkeleton : CS_AIBase
 {
-    // Start is called before the first frame update
-    void Start()
+    private void FixedUpdate()
     {
-        InitialiseAgent();
-        ChooseNewTarget();
+        MoveAgent();
+        if (DeathCheck())
+        {
+            DeathSequence();
+        }
+
+        AttackTarget();
     }
 
-    
+
+    private void AttackTarget()
+    {
+        if(CanAgentAttack())
+        {
+            if(IsTargetAPlatform())
+            {
+                AttackPlatform();
+            }
+        }
+    }
+
+
 }
