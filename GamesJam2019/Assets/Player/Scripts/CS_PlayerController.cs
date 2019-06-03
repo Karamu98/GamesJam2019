@@ -67,9 +67,15 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     {
         nav.velocity = new Vector3(Input.GetAxis("Horizontal" + iPlayerNum) * fSpeed,
          0, Input.GetAxis("Vertical" + iPlayerNum) * fSpeed);
-        if(nav.velocity.magnitude != 0)
+        gameObject.transform.eulerAngles = new Vector3(Input.GetAxis("Horizontal" + iPlayerNum) * fSpeed,
+         0, Input.GetAxis("Vertical" + iPlayerNum) * fSpeed);
+        if (nav.velocity.magnitude != 0)
         {
-            gameObject
+            gameObject.GetComponent<Animator>().SetBool("bWalking", true);
+        }
+        else
+        {
+            gameObject.GetComponent<Animator>().SetBool("bWalking", false);
         }
         CalculateRotation();
     }
