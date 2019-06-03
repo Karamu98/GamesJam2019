@@ -16,6 +16,8 @@ public class CS_Arrow : MonoBehaviour
 
     private Rigidbody m_rbRigidBodyRef;
 
+    private GameObject shooter;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,15 +37,16 @@ public class CS_Arrow : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<CS_AIBase>() != null)
         {
-            collision.gameObject.GetComponent<CS_AIBase>().DamageAgent((int)m_fDamage);
+            collision.gameObject.GetComponent<CS_AIBase>().DamageAgent((int)m_fDamage, shooter);
             Destroy(gameObject);
         }
 
     }
 
-    public void Initialise(Transform a_tTarget, float a_fDamage)
+    public void Initialise(Transform a_tTarget, float a_fDamage, GameObject a_gPlayer)
     {
         m_tTarget = a_tTarget;
+        shooter = a_gPlayer;
         Vector3 v3Look = m_tTarget.forward * 30.0f;
         transform.LookAt(v3Look);
         m_fDamage = a_fDamage;

@@ -20,6 +20,9 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     private bool bCanRangeAttack = true;
     private float fTimerForRange = 1;
 
+    [SerializeField]
+    private GameObject g;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -62,20 +65,22 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
 
     private void PlayerMovement()
     {
-       //gameObject.transform.position += new Vector3(Input.GetAxis("Horizontal" + iPlayerNum) * fSpeed,
-        // 0, Input.GetAxis("Vertical" + iPlayerNum) * fSpeed);
         nav.velocity = new Vector3(Input.GetAxis("Horizontal" + iPlayerNum) * fSpeed,
          0, Input.GetAxis("Vertical" + iPlayerNum) * fSpeed);
+        if(nav.velocity.magnitude != 0)
+        {
+            gameObject
+        }
         CalculateRotation();
     }
 
     private void CalculateRotation()
     {
-        float fx = Input.GetAxis("RotateHorizontal" + iPlayerNum);
-        Vector3 Look = new Vector3(fx, 0, -Input.GetAxisRaw("RotateVertical" + iPlayerNum));
-        Look += gameObject.transform.position;
-        gameObject.transform.LookAt(Look);
-
+        //gameObject.transform.GetChild(1).transform.eulerAngles = new Vector3(0, Mathf.Atan2(Input.GetAxis("RotateHorizontal" + iPlayerNum), Input.GetAxis("RotateVertical" + iPlayerNum)) * 180 / Mathf.PI * 2, 0);
+        float fx = -Input.GetAxis("RotateHorizontal" + iPlayerNum);
+        Vector3 Look = new Vector3(fx, 0, Input.GetAxis("RotateVertical" + iPlayerNum));
+        Look += gameObject.transform.GetChild(1).transform.position;
+        gameObject.transform.GetChild(1).transform.LookAt(Look);
     }
 
     private void MeleeAttack()
@@ -86,7 +91,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
             float angle = Vector3.Angle(gameObject.transform.forward, gameObject.transform.position - ai.transform.position);
             if (angle > -fMeleeAngle && angle < fMeleeAngle)
             {
-                ai.DamageAgent(fMeleeDamage);
+                ai.DamageAgent(fMeleeDamage, gameObject);
             }
         }
     }
@@ -105,7 +110,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         GameObject goProjectile = Instantiate(arrowPrefab);
         goProjectile.transform.position = transform.position;
         goProjectile.transform.position += transform.forward * 2.0f;
-        goProjectile.GetComponent<CS_Arrow>().Initialise(gameObject.transform, fRangeDamage);
+        goProjectile.GetComponent<CS_Arrow>().Initialise(gameObject.transform, fRangeDamage, gameObject);
     }
 
     public void SetPlayerNumber(int a_iNum)
