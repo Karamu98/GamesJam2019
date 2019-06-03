@@ -15,7 +15,7 @@ public class PlayerPlatform : MonoBehaviour, IDamageable
 
     public void TakeDamage(int a_damageToTake)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     public void AddNewPart()

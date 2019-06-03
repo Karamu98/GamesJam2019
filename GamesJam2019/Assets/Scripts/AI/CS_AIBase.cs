@@ -160,10 +160,10 @@ public class CS_AIBase : MonoBehaviour
         return true;
     }
 
-    public void AttackPlatform()
+    public virtual void AttackPlatform()
     {
         m_tTarget.GetComponent<PlayerPlatform>().TakeDamage((int)m_fDamageDealtPerHit);
-        m_fCurrentAttackDelay = m_fAttackDelay;
+        ResetAttackDelay();
     }
 
     public bool AttackDelayCheck()
@@ -182,6 +182,29 @@ public class CS_AIBase : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public Transform GetTargetRef()
+    {
+        return m_tTarget;
+    }
+
+    public void UpdateAttackDelay()
+    {
+        if(m_fCurrentAttackDelay > -1)
+        {
+            m_fCurrentAttackDelay -= Time.deltaTime;
+        }
+    }
+    public void ResetAttackDelay()
+    {
+        m_fCurrentAttackDelay = m_fAttackDelay;
+
+    }
+
+    public float GetDamage()
+    {
+        return m_fDamageDealtPerHit;
     }
 
 
