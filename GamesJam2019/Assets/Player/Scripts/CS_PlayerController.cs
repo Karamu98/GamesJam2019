@@ -30,6 +30,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         fSpeed = 3f;
         bStunned = false;
         fTimer = 3;
+        LookTo = new Vector3(100, 0, 0);
     }
 
     // Update is called once per frame
@@ -46,7 +47,6 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
             {
                 RangeAttack();
             }
-            Debug.Log(Input.GetAxis("Range" + iPlayerNum));
         }
         else
         {
@@ -99,9 +99,10 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         //gameObject.transform.GetChild(1).transform.eulerAngles = new Vector3(0, Mathf.Atan2(Input.GetAxis("RotateHorizontal" + iPlayerNum), Input.GetAxis("RotateVertical" + iPlayerNum)) * 180 / Mathf.PI * 2, 0);
         float fx = -Input.GetAxis("RotateHorizontal" + iPlayerNum);
         float fy = Input.GetAxis("RotateVertical" + iPlayerNum);
+        Debug.Log(fx + ", " + fy);
         if(fx != 0 && fy != 0)
         {
-            LookTo = new Vector3(fx, 0, fy) * 20;
+            LookTo = new Vector3(fx, 0, fy);
             LookTo += gameObject.transform.GetChild(2).transform.position;
         }
         gameObject.transform.GetChild(2).transform.LookAt(LookTo);

@@ -9,7 +9,7 @@ public class CS_GameManager : MonoBehaviour
     private bool[] bPlayersIn;
     private int iNumOfPlayers;
     [SerializeField]
-    private GameObject playerPrefab;
+    private GameObject[] playerPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -33,26 +33,14 @@ public class CS_GameManager : MonoBehaviour
         if (Input.GetButtonDown("A1") && !bPlayersIn[0])
         {
             bPlayersIn[0] = true;
-            GameObject player = Instantiate(playerPrefab);
+            GameObject player = Instantiate(playerPrefab[0]);
             player.GetComponent<CS_PlayerController>().SetPlayerNumber(1);
         }
         if (Input.GetButtonDown("A2") && !bPlayersIn[1])
         {
             bPlayersIn[1] = true;
-            GameObject player = Instantiate(playerPrefab);
+            GameObject player = Instantiate(playerPrefab[1]);
             player.GetComponent<CS_PlayerController>().SetPlayerNumber(2);
-        }
-        if (Input.GetButtonDown("A3") && !bPlayersIn[2])
-        {
-            bPlayersIn[2] = true;
-            GameObject player = Instantiate(playerPrefab);
-            player.GetComponent<CS_PlayerController>().SetPlayerNumber(3);
-        }
-        if (Input.GetButtonDown("A4") && !bPlayersIn[3])
-        {
-            bPlayersIn[3] = true;
-            GameObject player = Instantiate(playerPrefab);
-            player.GetComponent<CS_PlayerController>().SetPlayerNumber(4);
         }
 
     }
