@@ -11,8 +11,14 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     private bool bStunned;
     private float fTimer;
 
+    [SerializeField]
+    private GameObject arrowPrefab;
+
     float fMeleeAngle = 45; // 45 degrees, Melee range
     float fMeleeDamage = 10;
+    float fRangeDamage = 10;
+    private bool bCanRangeAttack = true;
+    private float fTimerForRange = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -37,10 +43,20 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
             {
                 RangeAttack();
             }
+            Debug.Log(Input.GetAxis("Range" + iPlayerNum));
         }
         else
         {
             PassOut();
+        }
+        if(!bCanRangeAttack)
+        {
+            fTimerForRange -= Time.deltaTime;
+            if(fTimerForRange <= 0)
+            {
+                fTimerForRange = 1;
+                bCanRangeAttack = true;
+            }
         }
     }
 
@@ -58,7 +74,6 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         float fx = Input.GetAxis("RotateHorizontal" + iPlayerNum);
         Vector3 Look = new Vector3(fx, 0, -Input.GetAxisRaw("RotateVertical" + iPlayerNum));
         Look += gameObject.transform.position;
-        Debug.Log(fx);
         gameObject.transform.LookAt(Look);
 
     }
@@ -78,7 +93,19 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
 
     private void RangeAttack()
     {
+        if (bCanRangeAttack)
+        {
+            AttackEnemy();
+            bCanRangeAttack = false;
+        }
+    }
 
+    private void AttackEnemy()
+    {
+        GameObject goProjectile = Instantiate(arrowPrefab);
+        goProjectile.transform.position = transform.position;
+        goProjectile.transform.position += transform.forward * 2.0f;
+        goProjectile.GetComponent<CS_Arrow>().Initialise(gameObject.transform, fRangeDamage);
     }
 
     public void SetPlayerNumber(int a_iNum)
