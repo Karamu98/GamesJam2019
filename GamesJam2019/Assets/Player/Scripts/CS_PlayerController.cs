@@ -45,15 +45,6 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
             else if(Input.GetAxis("Range" + iPlayerNum) == 1)
             {
                 RangeAttack();
-                gameObject.GetComponent<Animator>().SetBool("bMelee", false);
-                gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bMelee", false);
-
-            }
-            else
-            {
-                gameObject.GetComponent<Animator>().SetBool("bMelee", false);
-                gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bMelee", false);
-
             }
             Debug.Log(Input.GetAxis("Range" + iPlayerNum));
         }
@@ -70,6 +61,13 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
                 bCanRangeAttack = true;
             }
         }
+    }
+
+    private IEnumerator WaitForMelee()
+    {
+        yield return new WaitForSeconds(0.5f);
+        gameObject.GetComponent<Animator>().SetBool("bMelee", false);
+        gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bMelee", false);
     }
 
     private void PlayerMovement()
@@ -124,6 +122,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
                 ai.DamageAgent(fMeleeDamage, gameObject);
             }
         }
+        StartCoroutine(WaitForMelee());
     }
 
     private void RangeAttack()
