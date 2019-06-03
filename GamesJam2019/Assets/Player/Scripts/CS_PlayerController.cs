@@ -19,10 +19,16 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     float fRangeDamage = 10;
     private bool bCanRangeAttack = true;
     private float fTimerForRange = 1;
+    private float fDeathTimer = 3;
+    private bool bInWater = false;
 
     [SerializeField]
     private GameObject g;
     Vector3 LookTo;
+
+    [SerializeField]
+    private GameObject Spawn;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,6 +58,16 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         {
             PassOut();
         }
+        if(bInWater)
+        {
+            fDeathTimer -= Time.deltaTime;
+            if(fDeathTimer <= 0)
+            {
+                ResetPlayer();
+                fDeathTimer = 3;
+                bInWater = false;
+            }
+        }
         if(!bCanRangeAttack)
         {
             fTimerForRange -= Time.deltaTime;
@@ -61,6 +77,11 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
                 bCanRangeAttack = true;
             }
         }
+    }
+
+    private void ResetPlayer()
+    {
+        gameObject.transform.position = Spawn.transform.position;
     }
 
     private IEnumerator WaitForMelee()
@@ -154,6 +175,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         if(fTimer <= 0)
         {
             bStunned = false;
+            gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bFall", false);
             fTimer = 3;
         }
     }
@@ -164,11 +186,29 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         if (!bStunned)
         {
             bStunned = true;
+            gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bFall", true);
         }
     }
 
     public void Heal(int a_healthToHeal)
     {
         throw new System.NotImplementedException();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //if(collision.gameObject.GetComponent<Water>())
+        //{
+        //    bInWater = true;
+        //}
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        //if (collision.gameObject.GetComponent<Water>())
+        //{
+        //    fDeathTimer = 3;
+        //    bInWater = false;
+        //}
     }
 }
