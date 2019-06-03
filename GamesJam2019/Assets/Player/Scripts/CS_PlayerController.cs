@@ -45,6 +45,15 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
             else if(Input.GetAxis("Range" + iPlayerNum) == 1)
             {
                 RangeAttack();
+                gameObject.GetComponent<Animator>().SetBool("bMelee", false);
+                gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bMelee", false);
+
+            }
+            else
+            {
+                gameObject.GetComponent<Animator>().SetBool("bMelee", false);
+                gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bMelee", false);
+
             }
             Debug.Log(Input.GetAxis("Range" + iPlayerNum));
         }
@@ -76,10 +85,13 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         if (nav.velocity.magnitude != 0)
         {
             gameObject.GetComponent<Animator>().SetBool("bWalking", true);
+            gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bWalking", true);
         }
         else
         {
             gameObject.GetComponent<Animator>().SetBool("bWalking", false);
+            gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bWalking", false);
+
         }
         CalculateRotation();
     }
@@ -99,6 +111,10 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
 
     private void MeleeAttack()
     {
+        gameObject.GetComponent<Animator>().SetBool("bWalking", false);
+        gameObject.GetComponent<Animator>().SetBool("bMelee", true);
+        gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bWalking", false);
+        gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bMelee", true);
         CS_AIBase[] Enemies = FindObjectsOfType<CS_AIBase>();
         foreach(CS_AIBase ai in Enemies)
         {
