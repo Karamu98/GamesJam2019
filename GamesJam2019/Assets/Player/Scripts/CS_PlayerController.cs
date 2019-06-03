@@ -21,19 +21,19 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     private float fTimerForRange = 1;
     private float fDeathTimer = 3;
     private bool bInWater = false;
+    private bool bCarring = false;
 
     [SerializeField]
     private GameObject g;
     Vector3 LookTo;
 
-    [SerializeField]
     private GameObject Spawn;
 
     // Start is called before the first frame update
     void Start()
     {
         nav = gameObject.GetComponent<Rigidbody>();
-        fSpeed = 3f;
+        fSpeed = 1f;
         bStunned = false;
         fTimer = 3;
         LookTo = new Vector3(100, 0, 0);
@@ -42,7 +42,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
-        if(!bStunned)
+        if(!bStunned && !bCarring)
         {
             PlayerMovement();
             if(Input.GetButtonDown("Melee" + iPlayerNum))
@@ -54,9 +54,16 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
                 RangeAttack();
             }
         }
-        else
+        else if (bStunned)
         {
             PassOut();
+        }
+        else
+        {
+            if(Input.GetButtonDown("A" + iPlayerNum))
+            {
+                //Pick up object
+            }
         }
         if(bInWater)
         {
@@ -169,6 +176,11 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         iPlayerNum = a_iNum;
     }
 
+    public void SetSpawn(GameObject a_Spawn)
+    {
+        Spawn = a_Spawn;
+    }
+
     private void PassOut()
     {
         fTimer -= Time.deltaTime;
@@ -195,20 +207,20 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         throw new System.NotImplementedException();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        //if(collision.gameObject.GetComponent<Water>())
-        //{
-        //    bInWater = true;
-        //}
+        if(other.gameObject.GetComponent<Water>())
+        {
+            bInWater = true;
+        }
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
-        //if (collision.gameObject.GetComponent<Water>())
-        //{
-        //    fDeathTimer = 3;
-        //    bInWater = false;
-        //}
+        if (other.gameObject.GetComponent<Water>())
+        {
+            bInWater = false;
+        }
     }
+
 }
