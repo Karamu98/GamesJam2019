@@ -11,6 +11,9 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     private bool bStunned;
     private float fTimer;
 
+    float fMeleeAngle = 45; // 45 degrees, Melee range
+    float fMeleeDamage = 10;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +29,14 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         if(!bStunned)
         {
             PlayerMovement();
+            if(Input.GetButtonDown("Melee" + iPlayerNum))
+            {
+                MeleeAttack();
+            }
+            else if(Input.GetAxis("Range" + iPlayerNum) == 1)
+            {
+                RangeAttack();
+            }
         }
         else
         {
@@ -49,6 +60,24 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         Look += gameObject.transform.position;
         Debug.Log(fx);
         gameObject.transform.LookAt(Look);
+
+    }
+
+    private void MeleeAttack()
+    {
+        CS_AIBase[] Enemies = FindObjectsOfType<CS_AIBase>();
+        foreach(CS_AIBase ai in Enemies)
+        {
+            float angle = Vector3.Angle(gameObject.transform.forward, gameObject.transform.position - ai.transform.position);
+            if (angle > -fMeleeAngle && angle < fMeleeAngle)
+            {
+                ai.DamageAgent(fMeleeDamage);
+            }
+        }
+    }
+
+    private void RangeAttack()
+    {
 
     }
 
