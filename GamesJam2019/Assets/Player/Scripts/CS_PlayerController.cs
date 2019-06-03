@@ -22,12 +22,12 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
 
     [SerializeField]
     private GameObject g;
-
+    Vector3 LookTo;
     // Start is called before the first frame update
     void Start()
     {
         nav = gameObject.GetComponent<Rigidbody>();
-        fSpeed = 10f;
+        fSpeed = 3f;
         bStunned = false;
         fTimer = 3;
     }
@@ -67,8 +67,12 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     {
         nav.velocity = new Vector3(Input.GetAxis("Horizontal" + iPlayerNum) * fSpeed,
          0, Input.GetAxis("Vertical" + iPlayerNum) * fSpeed);
-        gameObject.transform.eulerAngles = new Vector3(Input.GetAxis("Horizontal" + iPlayerNum) * fSpeed,
-         0, Input.GetAxis("Vertical" + iPlayerNum) * fSpeed);
+
+        float fx = -Input.GetAxis("Horizontal" + iPlayerNum);
+        Vector3 Look = new Vector3(fx, 0, Input.GetAxis("Vertical" + iPlayerNum));
+        Look += gameObject.transform.position;
+        gameObject.transform. LookAt(Look);
+
         if (nav.velocity.magnitude != 0)
         {
             gameObject.GetComponent<Animator>().SetBool("bWalking", true);
@@ -84,9 +88,13 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     {
         //gameObject.transform.GetChild(1).transform.eulerAngles = new Vector3(0, Mathf.Atan2(Input.GetAxis("RotateHorizontal" + iPlayerNum), Input.GetAxis("RotateVertical" + iPlayerNum)) * 180 / Mathf.PI * 2, 0);
         float fx = -Input.GetAxis("RotateHorizontal" + iPlayerNum);
-        Vector3 Look = new Vector3(fx, 0, Input.GetAxis("RotateVertical" + iPlayerNum));
-        Look += gameObject.transform.GetChild(1).transform.position;
-        gameObject.transform.GetChild(1).transform.LookAt(Look);
+        float fy = Input.GetAxis("RotateVertical" + iPlayerNum);
+        if(fx != 0 && fy != 0)
+        {
+            LookTo = new Vector3(fx, 0, fy) * 20;
+            LookTo += gameObject.transform.GetChild(2).transform.position;
+        }
+        gameObject.transform.GetChild(2).transform.LookAt(LookTo);
     }
 
     private void MeleeAttack()
@@ -114,9 +122,9 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     private void AttackEnemy()
     {
         GameObject goProjectile = Instantiate(arrowPrefab);
-        goProjectile.transform.position = transform.position;
-        goProjectile.transform.position += transform.forward * 2.0f;
-        goProjectile.GetComponent<CS_Arrow>().Initialise(gameObject.transform, fRangeDamage, gameObject);
+        goProjectile.transform.position = transform.GetChild(2).transform.position;
+        goProjectile.transform.position -= transform.GetChild(2).transform.forward * 2.0f;
+        goProjectile.GetComponent<CS_Arrow>().Initialise(gameObject.transform.GetChild(2).transform, fRangeDamage, gameObject);
     }
 
     public void SetPlayerNumber(int a_iNum)
