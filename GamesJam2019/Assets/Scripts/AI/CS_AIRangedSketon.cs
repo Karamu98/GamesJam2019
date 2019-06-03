@@ -67,7 +67,6 @@ public class CS_AIRangedSketon : CS_AIBase
         else
         {
             m_nmaNavAgent.SetDestination(GetTargetRef().position);
-
         }
     }
 
@@ -88,6 +87,10 @@ public class CS_AIRangedSketon : CS_AIBase
             {
                 AttackPlatform();
             }
+            else if (IsTargetAPlayer())
+            {
+                AttackPlayer();
+            }
         }
     }
 
@@ -99,5 +102,10 @@ public class CS_AIRangedSketon : CS_AIBase
         goProjectile.transform.position += transform.forward * 2.0f;
         goProjectile.GetComponent<CS_AIProjectile>().Initialise(GetTargetRef(), GetDamage());
         ResetAttackDelay();
+    }
+
+    public override void AttackPlayer()
+    {
+        AttackPlatform();
     }
 }

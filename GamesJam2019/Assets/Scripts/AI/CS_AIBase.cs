@@ -21,7 +21,7 @@ public class CS_AIBase : MonoBehaviour
     private float m_fAttackDelay;
     private float m_fCurrentAttackDelay;
 
-
+    private CS_AIAnimationHandler m_ahAnimationHandler;
 
     private List<GameObject> m_lgoAttackableObjects;
 
@@ -37,6 +37,11 @@ public class CS_AIBase : MonoBehaviour
             m_nmaNavAgent = gameObject.AddComponent<NavMeshAgent>();
         }
 
+        m_ahAnimationHandler = GetComponent<CS_AIAnimationHandler>();
+        if (m_ahAnimationHandler == null)
+        {
+            m_ahAnimationHandler = gameObject.AddComponent<CS_AIAnimationHandler>();
+        }
         m_fCurrentHealth = m_fMaxHealth;
         m_fCurrentAttackDelay = m_fAttackDelay;
         ChooseNewTarget();
@@ -47,7 +52,15 @@ public class CS_AIBase : MonoBehaviour
         int iRandom = Random.Range(0, 2);
         if(iRandom == 0)
         {
-            SetTarget(FindObjectOfType<PlayerPlatform>().gameObject.transform);
+            PlayerPlatform tPlatform = FindObjectOfType<PlayerPlatform>();
+            if(tPlatform != null)
+            {
+                SetTarget(tPlatform.transform);
+            }
+            else
+            {
+                ChooseNewTarget();
+            }
         }
         else
         {
@@ -148,11 +161,28 @@ public class CS_AIBase : MonoBehaviour
         if (InAttackRange())
         {
             m_nmaNavAgent.isStopped = true;
+            AnimationSetStopped();
+
         }
         else
         {
             m_nmaNavAgent.isStopped = false;
+            AnimationSetMoving();
+
         }
+    }
+
+    public void AnimationSetMoving()
+    {
+        m_ahAnimationHandler.Run();
+    }
+    public void AnimationSetStopped()
+    {
+        m_ahAnimationHandler.Still();
+    }
+    public void AnimationSetAttack()
+    {
+        m_ahAnimationHandler.Attack();
     }
 
     public bool DeathCheck()
@@ -212,7 +242,15 @@ public class CS_AIBase : MonoBehaviour
     {
         m_tTarget.GetComponent<PlayerPlatform>().TakeDamage((int)m_fDamageDealtPerHit);
         ResetAttackDelay();
+        AnimationSetAttack();
     }
+    public virtual void AttackPlayer()
+    {
+        m_tTarget.GetComponent<CS_PlayerController>().TakeDamage((int)m_fDamageDealtPerHit);
+        ResetAttackDelay();
+        AnimationSetAttack();
+    }
+
 
     public bool AttackDelayCheck()
     {
