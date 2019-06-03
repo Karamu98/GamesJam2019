@@ -21,14 +21,17 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     private float fTimerForRange = 1;
     private float fDeathTimer = 3;
     private bool bInWater = false;
-    private bool bCarring = false;
+    private bool bCarrying = false;
     private bool bJumping = false;
+    private bool bPickUp = false;
 
     [SerializeField]
     private GameObject g;
     Vector3 LookTo;
 
     private GameObject Spawn;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +46,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
-        if(!bStunned && !bCarring)
+        if(!bStunned && !bCarrying)
         {
             PlayerMovement();
             if(Input.GetButtonDown("Melee" + iPlayerNum))
@@ -61,6 +64,22 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
                 gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bJump", true);
                 bJumping = true;
                 StartCoroutine(WaitForJump());
+            }
+            if (Input.GetButtonDown("B" + iPlayerNum) && !bJumping)
+            {
+                if (!bPickUp)
+                {
+                    //PickUp
+                    gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bPickUp", true);
+                    bPickUp = true;
+                }
+                else
+                {
+                    //Drop
+                    gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bPickUp", false);
+                    bPickUp = false;
+                }
+
             }
         }
         else if (bStunned)
@@ -164,6 +183,19 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
             }
         }
         StartCoroutine(WaitForMelee());
+    }
+
+    private void CheckForObject()
+    {
+        Debris[] debris = FindObjectsOfType<Debris>();
+        foreach (Debris deb in debris)
+        {
+            float angle = Vector3.Angle(gameObject.transform.forward, gameObject.transform.position - deb.transform.position);
+            if (angle > -fMeleeAngle && angle < fMeleeAngle)
+            {
+                //PickUp
+            }
+        }
     }
 
     private void RangeAttack()
