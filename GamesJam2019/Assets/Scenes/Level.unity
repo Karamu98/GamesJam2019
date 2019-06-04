@@ -394,7 +394,7 @@ GameObject:
   m_Component:
   - component: {fileID: 468930392}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Surface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -408,7 +408,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 468930391}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.7, z: 0.0001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5630193108937429751}
@@ -625,8 +625,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 879630391}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: 0}
-  m_LocalScale: {x: 5, y: 0.1, z: 5}
+  m_LocalPosition: {x: 0, y: 5.1, z: 0}
+  m_LocalScale: {x: 5, y: 0.3, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -1517,7 +1517,7 @@ Transform:
   m_GameObject: {fileID: 5630193108937789143}
   m_LocalRotation: {x: -0.00914325, y: 0, z: -0, w: 0.9999582}
   m_LocalPosition: {x: 0, y: 4.48, z: 0}
-  m_LocalScale: {x: 60, y: 0.5, z: 60}
+  m_LocalScale: {x: 60, y: 0.65, z: 60}
   m_Children:
   - {fileID: 5630193108937429749}
   - {fileID: 468930392}
@@ -1552,6 +1552,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5630193108937429751}
   - component: {fileID: 5630193108937789144}
+  - component: {fileID: 5630193108937789145}
   m_Layer: 0
   m_Name: model_waterPlane
   m_TagString: Untagged
@@ -1571,8 +1572,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 419cf54b5b37e97429a1fd0afc1750f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterSurface: {fileID: 0}
-  waterDensity: 0
+  waterSurface: {fileID: 468930391}
+  waterDensity: 50
+--- !u!65 &5630193108937789145
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5630193108937789143}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5564335, y: 30.827179, z: 0.23263681}
+  m_Center: {x: 0.0026006224, y: -14.913435, z: -0.07017125}
 --- !u!33 &5630193108938724053
 MeshFilter:
   m_ObjectHideFlags: 0
