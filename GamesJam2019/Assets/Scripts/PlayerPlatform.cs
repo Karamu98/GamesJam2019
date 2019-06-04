@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerPlatform : MonoBehaviour, IDamageable
 {
@@ -10,6 +11,9 @@ public class PlayerPlatform : MonoBehaviour, IDamageable
     private int health;
     private GameObject mesh;
     private int currentMesh = -1;
+
+    [SerializeField]
+    private Slider Health;
   
 
     public void AddNewPart(int a_iPartHealth)
@@ -20,6 +24,7 @@ public class PlayerPlatform : MonoBehaviour, IDamageable
     private void Awake()
     {
         health = maxHealth;
+        Health.maxValue = maxHealth;
         MakeMesh(2);
     }
 
@@ -34,7 +39,7 @@ public class PlayerPlatform : MonoBehaviour, IDamageable
     private void Update()
     {
         float percentage = (float)health / (float)maxHealth;
-
+        Health.value = health;
         if(percentage >= 0.6f && currentMesh != 2)
         {
             MakeMesh(2);
