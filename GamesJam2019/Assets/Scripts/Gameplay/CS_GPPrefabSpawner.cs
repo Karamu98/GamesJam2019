@@ -54,7 +54,7 @@ public class CS_GPPrefabSpawner : MonoBehaviour
         {
             GameObject goTowerPiece = Instantiate(m_lgoPrefabList[Random.Range(0, m_lgoPrefabList.Count)]);
             goTowerPiece.transform.position = m_tTowerBasePosition.position;
-            goTowerPiece.transform.position += Vector3.up * (goTowerPiece.transform.localScale.y * 0.5f) * i;
+            goTowerPiece.transform.position += Vector3.up * (m_lgoPrefabList[0].transform.localScale.y * 0.5f) * i;
 
             goTowerPiece.transform.SetParent(m_tTowerContainer);
 
@@ -93,7 +93,7 @@ public class CS_GPPrefabSpawner : MonoBehaviour
         if(m_qtTransformsQueue.Peek().position.y <= -m_fReplaceDistance)
         {
             Transform goTowerPiece = m_qtTransformsQueue.Dequeue();
-            goTowerPiece.position += Vector3.up * m_iTowerHeight * (goTowerPiece.transform.localScale.y * 0.5f);
+            goTowerPiece.position += Vector3.up * m_iTowerHeight * (m_lgoPrefabList[0].transform.localScale.y * 0.5f);
             m_qtTransformsQueue.Enqueue(goTowerPiece);
             if(!m_bDeleteFloor)
             {
