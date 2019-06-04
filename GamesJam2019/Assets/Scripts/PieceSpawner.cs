@@ -8,6 +8,7 @@ public class PieceSpawner : MonoBehaviour
     [SerializeField] private List<GameObject> piecesToSpawn;
     [SerializeField] private float pieceSpawnChance;
     [SerializeField] private List<GameObject> spawnableObjects;
+    [SerializeField] private int piecesAtOnce = 3;
     private List<GameObject> spawnedObjects = new List<GameObject>();
 
     private GameObject playerPlatform;
@@ -54,44 +55,45 @@ public class PieceSpawner : MonoBehaviour
         upperRangeY = ((innerYBounds.z * 0.5f) + (outerYBounds.z * 0.5f) + outerYBounds.x);
     }
 
-    private void SpawnObject()
+    private void SpawnObjects()
     {
-        GameObject newObj;
-        Vector2 randPos = Vector2.zero;
-
-        randPos.x = Random.Range(outerXBounds.x, upperRangeX);
-
-        if (randPos.x > (upperRangeX * 0.5f))
+        for(int i = 0; i < piecesAtOnce; i++)
         {
-            randPos.x += upperRangeX;
+            GameObject newObj;
+            Vector2 randPos = Vector2.zero;
+
+            randPos.x = Random.Range(outerXBounds.x, upperRangeX);
+
+            if (randPos.x > (upperRangeX * 0.5f))
+            {
+                randPos.x += upperRangeX;
+            }
+
+            randPos.y = Random.Range(outerYBounds.x, upperRangeY);
+
+            if (randPos.y > (upperRangeY * 0.5f))
+            {
+                randPos.y += upperRangeY;
+            }
+
+
+            float randObj = Random.Range(0, 100);
+
+            if (randObj <= pieceSpawnChance)
+            {
+                // Spawn boat piece
+                int randDebris = Random.Range(0, piecesToSpawn.Count);
+                newObj = Instantiate(piecesToSpawn[randDebris]);
+            }
+            else
+            {
+                // Spawn debris
+                int randDebris = Random.Range(0, spawnableObjects.Count);
+                newObj = Instantiate(spawnableObjects[randDebris]);
+
+                newObj.transform.position = new Vector3(randPos.x, gameObject.transform.position.y, randPos.y);
+            }
         }
-
-        randPos.y = Random.Range(outerYBounds.x, upperRangeY);
-
-        if (randPos.y > (upperRangeY * 0.5f))
-        {
-            randPos.y += upperRangeY;
-        }
-
-
-        float randObj = Random.Range(0, 100);
-
-        if(randObj <= pieceSpawnChance)
-        {
-            // Spawn boat piece
-            int randDebris = Random.Range(0, piecesToSpawn.Count);
-            newObj = Instantiate(piecesToSpawn[randDebris]);
-        }
-        else
-        {
-            // Spawn debris
-            int randDebris = Random.Range(0, spawnableObjects.Count);
-            newObj = Instantiate(spawnableObjects[randDebris]);
-
-            newObj.transform.position = new Vector3(randPos.x, gameObject.transform.position.y, randPos.y);
-        }
-
-        
     }
 
     private void Update()
@@ -101,7 +103,7 @@ public class PieceSpawner : MonoBehaviour
         if(timer <= 0.0f)
         {
             timer = spawnSepearation;
-            SpawnObject();
+            SpawnObjects();
         }
     }
 

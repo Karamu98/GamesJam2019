@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlatformPiece : MonoBehaviour
 {
     [SerializeField] private int healthToAdd;
-    [SerializeField] private GameObject itemPrefab;
     [SerializeField] private AudioClip attachAudio;
     [SerializeField] private GameObject attachParticleSystem;
     [SerializeField] private GameObject lingerParticleSystem;
@@ -16,21 +15,39 @@ public class PlatformPiece : MonoBehaviour
 
     private void Awake()
     {
-        lingerParticleSystem.SetActive(true);
-        attachParticleSystem.SetActive(false);
+        if(lingerParticleSystem != null)
+        {
+            lingerParticleSystem.SetActive(true);
+        }
+        
+        if(attachParticleSystem != null)
+        {
+            attachParticleSystem.SetActive(false);
+        }
+
         audioSource = GetComponent<AudioSource>();
         rigBody = GetComponent<Rigidbody>();
 
-        audioSource.clip = attachAudio;
+        if (attachAudio != null)
+        {
+            audioSource.clip = attachAudio;
+        }
     }
 
+    /// <summary>
+    /// Allow the object to be picked up
+    /// </summary>
+    /// <param name="a_pickUpPosition">The gameobject this will attach to</param>
     public void PickUp(GameObject a_pickUpPosition)
     {
         // Parent the pickup to the position passed though
         gameObject.transform.parent = a_pickUpPosition.transform;
 
         // Disable the lingering particle effect
-        lingerParticleSystem.SetActive(false);
+        if(lingerParticleSystem != null)
+        {
+            lingerParticleSystem.SetActive(false);
+        }
 
         // Disable the RBody
         rigBody.isKinematic = false;
@@ -38,8 +55,23 @@ public class PlatformPiece : MonoBehaviour
 
     public void AttachToPlatform()
     {
-        attachParticleSystem.SetActive(true);
-        audioSource.PlayOneShot(attachAudio);
+        if(attachParticleSystem != null)
+        {
+            attachParticleSystem.SetActive(true);
+        }
+        else
+        {
+            Debug.Log(gameObject.name + ": has no attaching particle effect.");
+        }
+
+        if(attachAudio != null)
+        {
+            audioSource.PlayOneShot(attachAudio);
+        }
+        else
+        {
+            Debug.Log(gameObject.name + ": has no attaching sound effect.");
+        }
 
         StartCoroutine(DestroyObject());
     }
@@ -56,6 +88,15 @@ public class PlatformPiece : MonoBehaviour
 
     public void Drop()
     {
+        if(lingerParticleSystem != null)
+        {
+            lingerParticleSystem.SetActive(true);
+        }
+        else
+        {
+            Debug.Log(gameObject.name + ": has no lingering sound effect.");
+        }
+
         gameObject.transform.parent = null;
         rigBody.isKinematic = false;
     }

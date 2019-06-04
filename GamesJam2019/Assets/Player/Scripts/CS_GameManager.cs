@@ -10,43 +10,43 @@ public class CS_GameManager : MonoBehaviour
     private int iNumOfPlayers;
     [SerializeField]
     private GameObject[] playerPrefab;
-    [SerializeField]
-    private GameObject Spawn;
+    [SerializeField] private GameObject[] spawnPoints;
+
+    private GameObject[] players;
 
     // Start is called before the first frame update
     void Start()
     {
         iNumOfPlayers = 0;
-        bPlayersIn = new bool[4];
-        for(int i = 0; i < 4; ++i)
-        {
-            bPlayersIn[i] = false;
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        ListenForPlayer();
+
     }
 
-    private void ListenForPlayer()
+    private void Awake()
     {
-        if (Input.GetButtonDown("A1") && !bPlayersIn[0])
-        {
-            bPlayersIn[0] = true;
-            GameObject player = Instantiate(playerPrefab[0]);
-            player.GetComponent<CS_PlayerController>().SetPlayerNumber(1);
-            player.GetComponent<CS_PlayerController>().SetSpawn(Spawn);
-        }
-        if (Input.GetButtonDown("A2") && !bPlayersIn[1])
-        {
-            bPlayersIn[1] = true;
-            GameObject player = Instantiate(playerPrefab[1]);
-            player.GetComponent<CS_PlayerController>().SetPlayerNumber(2);
-            player.GetComponent<CS_PlayerController>().SetSpawn(Spawn);
+        SpawnPlayers(2);
+    }
 
-        }
+    private void SpawnPlayers(int a_playerCount)
+    {
+        players = new GameObject[a_playerCount];
 
+        iNumOfPlayers = a_playerCount;
+
+        int playerNum = 0;
+
+        for(int i = 0; i < a_playerCount; i++)
+        {
+            players[playerNum] = Instantiate(playerPrefab[0]);
+            players[playerNum].gameObject.transform.position = spawnPoints[playerNum].gameObject.transform.position;
+            players[playerNum].GetComponent<CS_PlayerController>().SetPlayerNumber(playerNum + 1);
+            players[playerNum].GetComponent<CS_PlayerController>().SetSpawn(spawnPoints[playerNum]);
+
+            playerNum++;
+        }
     }
 }
