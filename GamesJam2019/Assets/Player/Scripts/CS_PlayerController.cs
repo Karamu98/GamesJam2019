@@ -41,6 +41,8 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     private GameObject pickUpPos;
     private GameObject ObjectPickedUp;
 
+    private Vector3 origBoxCentre;
+
 
     // Start is called before the first frame update
     void Start()
@@ -49,6 +51,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         bStunned = false;
         knockDownTimer = knockDownTime;
         LookTo = new Vector3(100, 0, 0);
+        origBoxCentre = GetComponent<BoxCollider>().center;
     }
 
     // Update is called once per frame
@@ -71,6 +74,8 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
                 gameObject.GetComponent<Animator>().SetBool("bJump", true);
                 gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bJump", true);
                 bJumping = true;
+                SetBoxCentre(new Vector3(0, 0.023f, 0));
+                GetComponent<Rigidbody>().useGravity = false;
                 StartCoroutine(WaitForJump());
             }
             if (Input.GetButtonDown("B" + iPlayerNum) && !bJumping)
@@ -128,6 +133,9 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         bJumping = false;
         gameObject.GetComponent<Animator>().SetBool("bJump", false);
         gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bJump", false);
+        SetBoxCentre(Vector3.zero);
+        GetComponent<Rigidbody>().useGravity = true;
+
     }
 
     private void ResetPlayer()
@@ -224,6 +232,12 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
             AttackEnemy();
             bCanRangeAttack = false;
         }
+    }
+
+    private void SetBoxCentre(Vector3 a_Add)
+    {
+        gameObject.GetComponent<BoxCollider>().center = origBoxCentre + a_Add;
+
     }
 
     private void AttackEnemy()
