@@ -237,3 +237,15 @@ MonoBehaviour:
   - {fileID: 5851138281045622752, guid: 28d1b45cdfec84242b4a776d959a0968, type: 3}
   - {fileID: 529220153327964916, guid: 689a557931219cb41b07fed86da148e9, type: 3}
   m_tRoundText: {fileID: 1404967288}
+  m_lgoSpawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
