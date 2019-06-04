@@ -13,6 +13,11 @@ public class Water : MonoBehaviour
     {
         Rigidbody rBody = other.gameObject.GetComponent<Rigidbody>();
 
+        if(rBody.tag == "Player")
+        {
+            return;
+        }
+
         if (rBody != null)
         {
             rigidbodies.Add(rBody);
