@@ -266,7 +266,7 @@ PrefabInstance:
     - target: {fileID: 1494347905864402737, guid: 855ac4c8eec32d74da0b668e8921bc2e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.05
+      value: 5.6
       objectReference: {fileID: 0}
     - target: {fileID: 1494347905864402737, guid: 855ac4c8eec32d74da0b668e8921bc2e,
         type: 3}
@@ -348,7 +348,7 @@ Light:
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -1554,7 +1554,7 @@ GameObject:
   - component: {fileID: 5630193108937789144}
   - component: {fileID: 5630193108937789145}
   m_Layer: 0
-  m_Name: model_waterPlane
+  m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
