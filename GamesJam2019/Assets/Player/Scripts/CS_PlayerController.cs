@@ -19,6 +19,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     private Rigidbody nav;
     private bool bStunned;
     private float knockDownTimer;
+    public bool bInvunerable;
 
     [Header("Spawnables")]
     [SerializeField]
@@ -52,6 +53,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         knockDownTimer = knockDownTime;
         LookTo = new Vector3(100, 0, 0);
         origBoxCentre = GetComponent<BoxCollider>().center;
+        bInvunerable = false;
     }
 
     // Update is called once per frame
@@ -87,6 +89,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
                         //PickUp
                         gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bPickUp", true);
                         bPickUp = true;
+                        Debug.Log("PickedUP");
                     }
 
                 }
@@ -192,7 +195,6 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         //gameObject.transform.GetChild(1).transform.eulerAngles = new Vector3(0, Mathf.Atan2(Input.GetAxis("RotateHorizontal" + iPlayerNum), Input.GetAxis("RotateVertical" + iPlayerNum)) * 180 / Mathf.PI * 2, 0);
         float fx = -Input.GetAxis("RotateHorizontal" + iPlayerNum);
         float fy = Input.GetAxis("RotateVertical" + iPlayerNum);
-        Debug.Log(fx + ", " + fy);
         if(fx != 0 && fy != 0)
         {
             LookTo = new Vector3(fx, 0, fy);
@@ -300,11 +302,19 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
 
     public void TakeDamage(int a_damageToTake, GameObject a_instigator)
     {
-        if (!bStunned)
+        if (!bStunned && !bInvunerable)
         {
             bStunned = true;
             gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bFall", true);
+            bInvunerable = true;
+            StartCoroutine(IfInvnuerable());
         }
+    }
+
+    private IEnumerator IfInvnuerable()
+    {
+        yield return new WaitForSeconds(2);
+        bInvunerable = false;
     }
 
     public void Heal(int a_healthToHeal, GameObject a_instigator)
