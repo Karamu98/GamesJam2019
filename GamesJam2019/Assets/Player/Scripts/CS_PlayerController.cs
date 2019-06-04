@@ -12,7 +12,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private float meleeAngle = 45;
     [SerializeField] private float rangeAttackSpeed = 0.2f;
     [SerializeField] private int rangedDamage = 10;
-    [SerializeField] private float knockDownTime = 5;
+    [SerializeField] private float knockDownTime = 1;
 
 
     private int iPlayerNum;
@@ -278,7 +278,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         {
             bStunned = false;
             gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bFall", false);
-            knockDownTimer = 3;
+            knockDownTimer = 1;
         }
     }
 

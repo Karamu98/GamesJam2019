@@ -82,10 +82,14 @@ public class PlatformPiece : MonoBehaviour
 
     IEnumerator DestroyObject()
     {
-        while(audioSource.isPlaying)
+        if(audioSource)
         {
-            yield return null; 
+            while (audioSource.isPlaying)
+            {
+                yield return null;
+            }
         }
+
 
         Destroy(gameObject);
     }
