@@ -36,6 +36,6 @@ public class SessionManager : MonoBehaviour
         // Wait for sounds and a bit for dramatic effect
         yield return new WaitForSeconds(3);
 
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("Menu");
     }
 }
