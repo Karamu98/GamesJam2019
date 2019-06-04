@@ -63,7 +63,7 @@ MonoBehaviour:
   m_fSpeed: 5
   m_tTarget: {fileID: 0}
   arrowDamage: 1000
-  m_fFieldOfView: 45
+  m_fFieldOfView: 50
   m_lmEnemyMask:
     serializedVersion: 2
     m_Bits: 512

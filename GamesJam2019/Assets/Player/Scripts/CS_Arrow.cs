@@ -148,16 +148,29 @@ public class CS_Arrow : MonoBehaviour
         CS_AIBase[] csEnemyList = FindObjectsOfType<CS_AIBase>();
         foreach (CS_AIBase csEnemy in csEnemyList)
         {
-            Vector3 v3DirToTarget = -(a_goPlayer.transform.position - csEnemy.transform.position ).normalized;
-            if(Vector3.Angle(a_goPlayer.transform.position, csEnemy.transform.position) < m_fFieldOfView * 0.5f)
+            Vector3 v3DirToTarget = -(a_goPlayer.transform.position - csEnemy.transform.position).normalized;
+            if (Vector3.Angle(a_goPlayer.transform.position, csEnemy.transform.position) < m_fFieldOfView * 0.5f)
             {
                 //if(Physics.Raycast(transform.position, v3DirToTarget, 1000.0f, m_lmEnemyMask))
                 //{
-                    Debug.Log("Found Enemy");
+                Debug.Log("Found Enemy");
 
-                    return csEnemy.transform;
+                return csEnemy.transform;
                 //}
             }
+            //float fTestAngle = Vector3.Angle(a_goPlayer.transform.position, transform.position);
+
+            //Vector3 v3RelativePos = (csEnemy.transform.position - a_goPlayer.transform.position).normalized;
+            //float fDot = Vector3.Dot(v3RelativePos, a_goPlayer.transform.forward);
+            //float fAngle = Mathf.Acos(fDot);
+            //fAngle = Mathf.Rad2Deg * fAngle;
+
+
+            //if(fAngle <= m_fFieldOfView)
+            //{
+            //    return csEnemy.transform;
+            //}
+
         }
 
 
