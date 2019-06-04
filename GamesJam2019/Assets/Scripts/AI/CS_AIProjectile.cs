@@ -20,10 +20,10 @@ public class CS_AIProjectile : MonoBehaviour
     private Rigidbody m_rbRigidBodyRef;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         m_rbRigidBodyRef = GetComponent<Rigidbody>();
-        if(m_rbRigidBodyRef == null)
+        if (m_rbRigidBodyRef == null)
         {
             m_rbRigidBodyRef = gameObject.AddComponent<Rigidbody>();
         }
@@ -36,15 +36,14 @@ public class CS_AIProjectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.GetComponent<CS_AIAttackableObjectComponent>() != null)
+        if (collision.gameObject.GetComponent<CS_AIAttackableObjectComponent>() != null)
         {
-            if(collision.gameObject.GetComponent<PlayerPlatform>() != null)
+            if (collision.gameObject.GetComponent<PlayerPlatform>() != null)
             {
                 collision.gameObject.GetComponent<PlayerPlatform>().TakeDamage((int)m_fDamage);
             }
-            Destroy(gameObject);
         }
-
+        Destroy(gameObject);
     }
 
     public void Initialise(Transform a_tTarget, float a_fDamage)

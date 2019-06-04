@@ -135,7 +135,8 @@ MonoBehaviour:
   m_fDamageDealtPerHit: 5
   m_fAttackDelay: 2
   m_nmaNavAgent: {fileID: 0}
-  m_goArrowPrefab: {fileID: 0}
+  m_goArrowPrefab: {fileID: 5435858807677652263, guid: 7045905ddbd726346bce7353ca69b227,
+    type: 3}
 --- !u!114 &3908312628405593066
 MonoBehaviour:
   m_ObjectHideFlags: 0
