@@ -850,6 +850,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4344c6f7f147dd746a37477b3bfa3aa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 3
+  meleeSpeed: 0.05
+  meleeDamage: 10
+  meleeAngle: 45
+  rangeAttackSpeed: 0.5
+  rangedDamage: 10
+  knockDownTime: 5
   arrowPrefab: {fileID: 4060082066417744728, guid: 333d054fe2417994f8c5403e27b55c17,
     type: 3}
   g: {fileID: 4958824407907257363, guid: 4326026a70c387a4eb4154bd5cb51f12, type: 3}

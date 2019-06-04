@@ -5,20 +5,27 @@ using UnityEngine.AI;
 
 public class CS_PlayerController : MonoBehaviour, IDamageable
 {
+    [Header("Player Settings")]
+    [SerializeField] private float moveSpeed = 3;
+    [SerializeField] private float meleeSpeed = 0.05f;
+    [SerializeField] private int meleeDamage = 10;
+    [SerializeField] private float meleeAngle = 45;
+    [SerializeField] private float rangeAttackSpeed = 0.2f;
+    [SerializeField] private int rangedDamage = 10;
+    [SerializeField] private float knockDownTime = 5;
+
+
     private int iPlayerNum;
     private Rigidbody nav;
-    private float fSpeed;
     private bool bStunned;
-    private float fTimer;
+    private float knockDownTimer;
 
+    [Header("Spawnables")]
     [SerializeField]
     private GameObject arrowPrefab;
 
-    float fMeleeAngle = 45; // 45 degrees, Melee range
-    float fMeleeDamage = 10;
-    float fRangeDamage = 10;
     private bool bCanRangeAttack = true;
-    private float fTimerForRange = 1;
+    private float fTimerForRange = 0;
     private float fDeathTimer = 3;
     private bool bInWater = false;
     private bool bCarrying = false;
@@ -29,7 +36,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     private GameObject g;
     Vector3 LookTo;
 
-    private GameObject Spawn;
+    private GameObject spawnPoint;
 
 
 
@@ -37,9 +44,8 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     void Start()
     {
         nav = gameObject.GetComponent<Rigidbody>();
-        fSpeed = 1f;
         bStunned = false;
-        fTimer = 3;
+        knockDownTimer = knockDownTime;
         LookTo = new Vector3(100, 0, 0);
     }
 
@@ -103,7 +109,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
             fTimerForRange -= Time.deltaTime;
             if(fTimerForRange <= 0)
             {
-                fTimerForRange = 1;
+                fTimerForRange = rangeAttackSpeed;
                 bCanRangeAttack = true;
             }
         }
@@ -119,20 +125,20 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
 
     private void ResetPlayer()
     {
-        gameObject.transform.position = Spawn.transform.position;
+        gameObject.transform.position = spawnPoint.transform.position;
     }
 
     private IEnumerator WaitForMelee()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(meleeSpeed);
         gameObject.GetComponent<Animator>().SetBool("bMelee", false);
         gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bMelee", false);
     }
 
     private void PlayerMovement()
     {
-        nav.velocity = new Vector3(Input.GetAxis("Horizontal" + iPlayerNum) * fSpeed,
-         0, Input.GetAxis("Vertical" + iPlayerNum) * fSpeed);
+        nav.velocity = new Vector3(Input.GetAxis("Horizontal" + iPlayerNum) * moveSpeed,
+         0, Input.GetAxis("Vertical" + iPlayerNum) * moveSpeed);
 
         float fx = -Input.GetAxis("Horizontal" + iPlayerNum);
         Vector3 Look = new Vector3(fx, 0, Input.GetAxis("Vertical" + iPlayerNum));
@@ -177,9 +183,9 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         foreach(CS_AIBase ai in Enemies)
         {
             float angle = Vector3.Angle(gameObject.transform.forward, gameObject.transform.position - ai.transform.position);
-            if (angle > -fMeleeAngle && angle < fMeleeAngle)
+            if (angle > -meleeAngle && angle < meleeAngle)
             {
-                ai.DamageAgent(fMeleeDamage, gameObject);
+                ai.DamageAgent(meleeDamage, gameObject);
             }
         }
         StartCoroutine(WaitForMelee());
@@ -191,7 +197,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         foreach (Debris deb in debris)
         {
             float angle = Vector3.Angle(gameObject.transform.forward, gameObject.transform.position - deb.transform.position);
-            if (angle > -fMeleeAngle && angle < fMeleeAngle)
+            if (angle > -meleeAngle && angle < meleeAngle)
             {
                 //PickUp
             }
@@ -212,7 +218,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         GameObject goProjectile = Instantiate(arrowPrefab);
         goProjectile.transform.position = transform.GetChild(2).transform.position;
         goProjectile.transform.position -= transform.GetChild(2).transform.forward * 2.0f;
-        goProjectile.GetComponent<CS_Arrow>().Initialise(gameObject.transform.GetChild(2).transform, fRangeDamage, gameObject);
+        goProjectile.GetComponent<CS_Arrow>().Initialise(gameObject.transform.GetChild(2).transform, rangedDamage, gameObject);
     }
 
     public void SetPlayerNumber(int a_iNum)
@@ -222,33 +228,18 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
 
     public void SetSpawn(GameObject a_Spawn)
     {
-        Spawn = a_Spawn;
+        spawnPoint = a_Spawn;
     }
 
     private void PassOut()
     {
-        fTimer -= Time.deltaTime;
-        if(fTimer <= 0)
+        knockDownTimer -= Time.deltaTime;
+        if(knockDownTimer <= 0)
         {
             bStunned = false;
             gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bFall", false);
-            fTimer = 3;
+            knockDownTimer = 3;
         }
-    }
-
-
-    public void TakeDamage(int a_damageToTake)
-    {
-        if (!bStunned)
-        {
-            bStunned = true;
-            gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bFall", true);
-        }
-    }
-
-    public void Heal(int a_healthToHeal)
-    {
-        throw new System.NotImplementedException();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -267,4 +258,17 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         }
     }
 
+    public void TakeDamage(int a_damageToTake, GameObject a_instigator)
+    {
+        if (!bStunned)
+        {
+            bStunned = true;
+            gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bFall", true);
+        }
+    }
+
+    public void Heal(int a_healthToHeal, GameObject a_instigator)
+    {
+        throw new System.NotImplementedException();
+    }
 }

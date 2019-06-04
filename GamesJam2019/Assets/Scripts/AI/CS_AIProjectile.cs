@@ -38,9 +38,9 @@ public class CS_AIProjectile : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<CS_AIAttackableObjectComponent>() != null)
         {
-            if (collision.gameObject.GetComponent<PlayerPlatform>() != null)
+            if (collision.gameObject.GetComponent<IDamageable>() != null)
             {
-                collision.gameObject.GetComponent<PlayerPlatform>().TakeDamage((int)m_fDamage);
+                collision.gameObject.GetComponent<IDamageable>().TakeDamage((int)m_fDamage, gameObject);
             }
         }
         Destroy(gameObject);

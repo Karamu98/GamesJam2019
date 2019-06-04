@@ -12,12 +12,14 @@ public class CS_Arrow : MonoBehaviour
     private Transform m_tTarget;
 
     [SerializeField]
-    private float m_fDamage;
+    private int arrowDamage;
 
     private Rigidbody m_rbRigidBodyRef;
 
     private GameObject shooter;
     Vector3 v3Look;
+
+    private bool hasHit = false;
 
     private float fLifeTimer;
     // Start is called before the first frame update
@@ -28,12 +30,14 @@ public class CS_Arrow : MonoBehaviour
         {
             m_rbRigidBodyRef = gameObject.AddComponent<Rigidbody>();
         }
+
+        m_rbRigidBodyRef.velocity = v3Look * m_fSpeed;
+
         fLifeTimer = 3;
     }
 
-    private void FixedUpdate()
-    {
-        m_rbRigidBodyRef.velocity = v3Look * m_fSpeed;
+    private void Update()
+    {        
         fLifeTimer -= Time.deltaTime;
         if(fLifeTimer <= 0)
         {
@@ -43,21 +47,58 @@ public class CS_Arrow : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<CS_AIBase>() != null)
+        if(!hasHit && collision.gameObject.GetComponent<CS_Arrow>() == null)
         {
-            collision.gameObject.GetComponent<CS_AIBase>().DamageAgent((int)m_fDamage, shooter);
-            Destroy(gameObject);
+            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(arrowDamage, shooter);
+                Destroy(gameObject);
+                return;
+            }
+
+            m_rbRigidBodyRef.useGravity = true;
         }
     }
 
-    public void Initialise(Transform a_tTarget, float a_fDamage, GameObject a_gPlayer)
+    private void OnTriggerEnter(Collider other)
+    {
+        // If we hit something damageable
+        IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+        if (damageable != null)
+        {
+            // Damage and destroy
+            damageable.TakeDamage(arrowDamage, shooter);
+            Destroy(gameObject);
+            return;
+        }
+
+        // If we hit another arrow
+        if(other.GetComponent<CS_Arrow>() != null)
+        {
+            // Do this later
+            return;
+        }
+        hasHit = true;
+        m_rbRigidBodyRef.constraints = RigidbodyConstraints.FreezeAll;
+
+        Collider[] colliders;
+        colliders = gameObject.GetComponents<Collider>();
+
+        foreach(Collider collider in colliders)
+        {
+            collider.enabled = false;
+        }
+        
+    }
+
+    public void Initialise(Transform a_tTarget, int a_damage, GameObject a_gPlayer)
     {
         m_tTarget = a_tTarget;
         shooter = a_gPlayer;
         v3Look = -m_tTarget.forward * 3;
-        //transform.LookAt(v3Look);
         transform.rotation = m_tTarget.rotation;
         GetComponent<Rigidbody>().freezeRotation = true;
-        m_fDamage = a_fDamage;
+        arrowDamage = a_damage;
     }
 }

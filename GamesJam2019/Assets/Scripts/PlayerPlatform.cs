@@ -7,24 +7,6 @@ public class PlayerPlatform : MonoBehaviour, IDamageable
     private int health;
     private int maxHealth;
 
-    public void Heal(int a_healthToHeal)
-    {
-
-        throw new System.NotImplementedException();
-    }
-
-    public void TakeDamage(int a_damageToTake)
-    {
-        //throw new System.NotImplementedException();
-
-        health -= a_damageToTake;
-
-        // Death
-        if(health <= 0)
-        {
-            SessionManager.OnPlayerLose();
-        }
-    }
 
     public void AddNewPart(int a_partHealth)
     {
@@ -34,5 +16,21 @@ public class PlayerPlatform : MonoBehaviour, IDamageable
     private void Awake()
     {
         
+    }
+
+    public void TakeDamage(int a_damageToTake, GameObject a_instigator)
+    {
+        health -= a_damageToTake;
+
+        // Death
+        if (health <= 0)
+        {
+            SessionManager.OnPlayerLose();
+        }
+    }
+
+    public void Heal(int a_healthToHeal, GameObject a_instigator)
+    {
+        throw new System.NotImplementedException();
     }
 }

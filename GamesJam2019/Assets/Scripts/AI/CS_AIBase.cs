@@ -240,13 +240,13 @@ public class CS_AIBase : MonoBehaviour
 
     public virtual void AttackPlatform()
     {
-        m_tTarget.GetComponent<PlayerPlatform>().TakeDamage((int)m_fDamageDealtPerHit);
+        m_tTarget.GetComponent<PlayerPlatform>().TakeDamage((int)m_fDamageDealtPerHit, gameObject);
         ResetAttackDelay();
         AnimationSetAttack();
     }
     public virtual void AttackPlayer()
     {
-        m_tTarget.GetComponent<CS_PlayerController>().TakeDamage((int)m_fDamageDealtPerHit);
+        m_tTarget.GetComponent<CS_PlayerController>().TakeDamage((int)m_fDamageDealtPerHit, gameObject);
         ResetAttackDelay();
         AnimationSetAttack();
     }
