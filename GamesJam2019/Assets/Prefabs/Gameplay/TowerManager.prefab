@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8922201091128075709
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8922201091128075699}
+  - component: {fileID: 8922201091128075708}
+  m_Layer: 0
+  m_Name: TowerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8922201091128075699
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8922201091128075709}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8922201091128075708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8922201091128075709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2328a4d0e0f50f944ac9c52a3e4da6e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_iTowerHeight: 10
+  m_fSpeed: 1
+  m_fReplaceDistance: 0
+  m_lgoPrefabList:
+  - {fileID: 7498939903474318775, guid: c83901e56a2663449a718b83f4b48861, type: 3}
+  - {fileID: 9208337396023216748, guid: af79c3bb28425ac4ca1249f16c2fd33f, type: 3}
+  - {fileID: 1792941044819825896, guid: 6825e095e4082af4d94990455603209e, type: 3}
+  - {fileID: 2658530110092042786, guid: 6ab62ce3ef290f741aa05b4fb6bd4b58, type: 3}
+  - {fileID: 4192585198986620371, guid: 3cb3709688307b24e98fa367fcdc64af, type: 3}
+  - {fileID: 2903393204269941832, guid: 9068d09545194ea49bf41771200f5cc4, type: 3}
+  - {fileID: 669224196575406789, guid: 3cadf00f808bf554a969e0386dbd3998, type: 3}
+  m_tTowerBasePosition: {fileID: 0}
+  m_tTowerContainer: {fileID: 0}

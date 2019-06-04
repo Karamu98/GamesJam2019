@@ -11,12 +11,19 @@ public class CS_GPPrefabSpawner : MonoBehaviour
     [SerializeField]
     private float m_fSpeed;
 
+    [SerializeField]
+    private int m_iStartDistanceMultiplier;
 
+    [SerializeField]
+    private int m_iReplaceDistanceMultiplier;
     [SerializeField]
     private float m_fReplaceDistance;
     [Header("Prefabs")]
     [SerializeField]
     private List<GameObject> m_lgoPrefabList = new List<GameObject>();
+
+    [SerializeField]
+    private GameObject m_goFloorPiece;
 
     [Header("References")]
     [SerializeField]
@@ -28,6 +35,8 @@ public class CS_GPPrefabSpawner : MonoBehaviour
     private Queue<Transform> m_qtTransformsQueue;
     private List<GameObject> m_lgoObjectList;
 
+    private GameObject m_goFloorRef;
+    private bool m_bDeleteFloor;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +44,7 @@ public class CS_GPPrefabSpawner : MonoBehaviour
         m_lgoObjectList = new List<GameObject>();
         SpawnTower();
 
-        m_fReplaceDistance = (m_lgoPrefabList[0].transform.localScale.y * 0.5f) * 2.0f;
+        m_fReplaceDistance = (m_lgoPrefabList[0].transform.localScale.y * 0.5f) * m_iReplaceDistanceMultiplier;
     }
 
 
@@ -49,9 +58,20 @@ public class CS_GPPrefabSpawner : MonoBehaviour
 
             goTowerPiece.transform.SetParent(m_tTowerContainer);
 
+            if(i == 0)
+            {
+                m_goFloorRef = Instantiate(m_goFloorPiece, goTowerPiece.transform);
+
+            }
+
             m_qtTransformsQueue.Enqueue(goTowerPiece.transform);
             m_lgoObjectList.Add(goTowerPiece);
         }
+
+        //foreach (GameObject goTowerPiece in m_lgoObjectList)
+        //{
+        //    goTowerPiece.transform.position += Vector3.down * m_iStartDistanceMultiplier;
+        //}
     }
 
     private void MoveTower()
@@ -75,6 +95,10 @@ public class CS_GPPrefabSpawner : MonoBehaviour
             Transform goTowerPiece = m_qtTransformsQueue.Dequeue();
             goTowerPiece.position += Vector3.up * m_iTowerHeight * (goTowerPiece.transform.localScale.y * 0.5f);
             m_qtTransformsQueue.Enqueue(goTowerPiece);
+            if(!m_bDeleteFloor)
+            {
+                Destroy(m_goFloorRef);
+            }
         }
     }
 }
