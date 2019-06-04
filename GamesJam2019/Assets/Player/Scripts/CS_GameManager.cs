@@ -41,7 +41,7 @@ public class CS_GameManager : MonoBehaviour
 
         for(int i = 0; i < a_playerCount; i++)
         {
-            players[playerNum] = Instantiate(playerPrefab[0]);
+            players[playerNum] = Instantiate(playerPrefab[playerNum]);
             players[playerNum].gameObject.transform.position = spawnPoints[playerNum].gameObject.transform.position;
             players[playerNum].GetComponent<CS_PlayerController>().SetPlayerNumber(playerNum + 1);
             players[playerNum].GetComponent<CS_PlayerController>().SetSpawn(spawnPoints[playerNum]);

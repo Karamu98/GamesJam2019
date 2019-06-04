@@ -37,7 +37,9 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     Vector3 LookTo;
 
     private GameObject spawnPoint;
-
+    [SerializeField]
+    private GameObject pickUpPos;
+    private GameObject ObjectPickedUp;
 
 
     // Start is called before the first frame update
@@ -52,14 +54,14 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
-        if(!bStunned && !bCarrying)
+        if(!bStunned )
         {
             PlayerMovement();
-            if(Input.GetButtonDown("Melee" + iPlayerNum))
+            if(Input.GetButtonDown("Melee" + iPlayerNum) && !bPickUp)
             {
                 MeleeAttack();
             }
-            else if(Input.GetAxis("Range" + iPlayerNum) == 1)
+            else if(Input.GetAxis("Range" + iPlayerNum) == 1 && !bPickUp)
             {
                 RangeAttack();
             }
@@ -75,14 +77,19 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
             {
                 if (!bPickUp)
                 {
-                    //PickUp
-                    gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bPickUp", true);
-                    bPickUp = true;
+                    if(CheckForObject())
+                    {
+                        //PickUp
+                        gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bPickUp", true);
+                        bPickUp = true;
+                    }
+
                 }
                 else
                 {
                     //Drop
                     gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bPickUp", false);
+                    ObjectPickedUp.GetComponent<PlatformPiece>().Drop();
                     bPickUp = false;
                 }
 
@@ -191,17 +198,23 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         StartCoroutine(WaitForMelee());
     }
 
-    private void CheckForObject()
+    private bool CheckForObject()
     {
-        Debris[] debris = FindObjectsOfType<Debris>();
-        foreach (Debris deb in debris)
+        PlatformPiece[] debris = FindObjectsOfType<PlatformPiece>();
+        foreach (PlatformPiece deb in debris)
         {
-            float angle = Vector3.Angle(gameObject.transform.forward, gameObject.transform.position - deb.transform.position);
-            if (angle > -meleeAngle && angle < meleeAngle)
-            {
+            //float angle = Vector3.Angle(gameObject.transform.forward, gameObject.transform.position - deb.transform.position);
+            //if (angle > -meleeAngle && angle < meleeAngle)
+            //{
+            if(Vector3.Distance(gameObject.transform.position, deb.gameObject.transform.position) <= 1.5f)
+            { 
                 //PickUp
+                deb.PickUp(pickUpPos);
+                ObjectPickedUp = deb.gameObject;
+                return true;
             }
         }
+        return false;
     }
 
     private void RangeAttack()

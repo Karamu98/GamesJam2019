@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7713617521344765667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6761387618460838079}
+  m_Layer: 0
+  m_Name: PickUpPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6761387618460838079
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7713617521344765667}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0000000036322, y: 0.0731, z: 0.000000041723}
+  m_LocalScale: {x: 0.0038899, y: 0.0038899, z: 0.0038899}
+  m_Children: []
+  m_Father: {fileID: 9049905513242859443}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8059992965086563822
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,6 +846,7 @@ Transform:
   - {fileID: 9049905513242859441}
   - {fileID: 9049905513242859447}
   - {fileID: 7137541980607509946}
+  - {fileID: 6761387618460838079}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -860,6 +891,7 @@ MonoBehaviour:
   arrowPrefab: {fileID: 4060082066417744728, guid: 333d054fe2417994f8c5403e27b55c17,
     type: 3}
   g: {fileID: 4958824407907257363, guid: 4326026a70c387a4eb4154bd5cb51f12, type: 3}
+  pickUpPos: {fileID: 7713617521344765667}
 --- !u!54 &7435335937177299945
 Rigidbody:
   m_ObjectHideFlags: 0

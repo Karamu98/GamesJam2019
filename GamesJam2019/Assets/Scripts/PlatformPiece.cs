@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlatformPiece : MonoBehaviour
 {
     [SerializeField] private int healthToAdd;
     [SerializeField] private AudioClip attachAudio;
     [SerializeField] private GameObject attachParticleSystem;
     [SerializeField] private GameObject lingerParticleSystem;
-
+    private Quaternion StartRot;
 
     private AudioSource audioSource;
     private Rigidbody rigBody;
@@ -19,7 +20,7 @@ public class PlatformPiece : MonoBehaviour
         {
             lingerParticleSystem.SetActive(true);
         }
-        
+        StartRot = gameObject.transform.rotation;
         if(attachParticleSystem != null)
         {
             attachParticleSystem.SetActive(false);
@@ -42,15 +43,18 @@ public class PlatformPiece : MonoBehaviour
     {
         // Parent the pickup to the position passed though
         gameObject.transform.parent = a_pickUpPosition.transform;
+        gameObject.transform.localPosition = Vector3.zero;
+        gameObject.transform.localRotation = StartRot;
 
         // Disable the lingering particle effect
-        if(lingerParticleSystem != null)
+        if (lingerParticleSystem != null)
         {
             lingerParticleSystem.SetActive(false);
         }
 
         // Disable the RBody
         rigBody.isKinematic = false;
+        rigBody.constraints = RigidbodyConstraints.FreezeAll;
     }
 
     public void AttachToPlatform()
@@ -98,6 +102,8 @@ public class PlatformPiece : MonoBehaviour
         }
 
         gameObject.transform.parent = null;
+        rigBody.constraints = RigidbodyConstraints.None;
+
         rigBody.isKinematic = false;
     }
 }
