@@ -15,7 +15,7 @@ public class CS_AIBase : MonoBehaviour
     public float m_fAttackRange;
 
     [SerializeField]
-    private int attackDamage;
+    private int m_iDamageDealtPerHit;
 
     [SerializeField]
     private float m_fAttackDelay;
@@ -241,7 +241,7 @@ public class CS_AIBase : MonoBehaviour
 
     public virtual void AttackPlatform()
     {
-        m_tTarget.GetComponent<PlayerPlatform>().TakeDamage(attackDamage, gameObject);
+        m_tTarget.GetComponent<PlayerPlatform>().TakeDamage(m_iDamageDealtPerHit, gameObject);
         ResetAttackDelay();
         AnimationSetAttack();
     }
@@ -254,7 +254,7 @@ public class CS_AIBase : MonoBehaviour
             return;
         }
 
-        m_tTarget.GetComponent<CS_PlayerController>().TakeDamage(attackDamage, gameObject);
+        m_tTarget.GetComponent<CS_PlayerController>().TakeDamage(m_iDamageDealtPerHit, gameObject);
         ResetAttackDelay();
         AnimationSetAttack();
     }
@@ -298,7 +298,7 @@ public class CS_AIBase : MonoBehaviour
 
     public int GetDamage()
     {
-        return attackDamage;
+        return m_iDamageDealtPerHit;
     }
 
 
