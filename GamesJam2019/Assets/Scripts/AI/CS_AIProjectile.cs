@@ -36,11 +36,18 @@ public class CS_AIProjectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<CS_AIAttackableObjectComponent>() != null)
+        if (collision.gameObject.GetComponent<CS_PlayerController>() != null)
         {
             if (collision.gameObject.GetComponent<IDamageable>() != null)
             {
-                collision.gameObject.GetComponent<IDamageable>().TakeDamage((int)m_fDamage, gameObject);
+                collision.gameObject.GetComponent<IDamageable>().TakeDamage(m_fDamage, gameObject);
+            }
+        }
+        else if (collision.gameObject.GetComponent<PlayerPlatform>() != null)
+        {
+            if (collision.gameObject.GetComponent<IDamageable>() != null)
+            {
+                collision.gameObject.GetComponent<IDamageable>().TakeDamage(m_fDamage, gameObject);
             }
         }
         Destroy(gameObject);

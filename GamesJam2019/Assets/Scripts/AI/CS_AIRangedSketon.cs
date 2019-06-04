@@ -29,7 +29,7 @@ public class CS_AIRangedSketon : CS_AIBase
 
     public override void MoveAgent()
     {
-        if (TargetNullCheck())
+        if (TargetNullCheck() || (IsTargetAPlayer() && GetTargetRef().GetComponent<CS_PlayerController>().bInvunerable))
         {
             ChooseNewTarget();
             return;
@@ -106,6 +106,12 @@ public class CS_AIRangedSketon : CS_AIBase
 
     public override void AttackPlayer()
     {
+        if (GetTargetRef().GetComponent<CS_PlayerController>().bInvunerable == true)
+        {
+            ChooseNewTarget();
+            ResetAttackDelay();
+            return;
+        }
         AttackPlatform();
     }
 }

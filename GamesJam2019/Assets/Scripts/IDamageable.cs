@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    void TakeDamage(int a_damageToTake, GameObject a_instigator);
-    void Heal(int a_healthToHeal, GameObject a_instigator);
+    void TakeDamage(float a_fDamageToTake, GameObject a_goInstigator);
+    void Heal(float a_fHealthToHeal, GameObject a_goInstigator);
 }

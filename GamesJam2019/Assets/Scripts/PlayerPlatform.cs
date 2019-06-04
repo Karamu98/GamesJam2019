@@ -4,32 +4,34 @@ using UnityEngine;
 
 public class PlayerPlatform : MonoBehaviour, IDamageable
 {
-    private int health;
-    private int maxHealth;
+
+    private float m_fHealth;
+    [SerializeField]
+    private float m_fMaxHealth = 100.0f;
 
 
-    public void AddNewPart(int a_partHealth)
+    public void AddNewPart(int a_iPartHealth)
     {
-        maxHealth += a_partHealth;
+        m_fHealth += a_iPartHealth;
     }
 
     private void Awake()
     {
-        
+        m_fHealth = m_fMaxHealth;
     }
 
-    public void TakeDamage(int a_damageToTake, GameObject a_instigator)
+    public void TakeDamage(float a_fDamageToTake, GameObject a_goInstigator)
     {
-        health -= a_damageToTake;
+        m_fHealth -= a_fDamageToTake;
 
         // Death
-        if (health <= 0)
+        if (m_fHealth <= 0)
         {
             SessionManager.OnPlayerLose();
         }
     }
 
-    public void Heal(int a_healthToHeal, GameObject a_instigator)
+    public void Heal(float a_fHealthToHeal, GameObject a_goInstigator)
     {
         throw new System.NotImplementedException();
     }

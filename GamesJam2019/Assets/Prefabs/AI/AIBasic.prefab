@@ -124,7 +124,7 @@ MonoBehaviour:
   m_fMaxHealth: 100
   m_fAttackRange: 2
   m_fDamageDealtPerHit: 5
-  m_fAttackDelay: 0
+  m_fAttackDelay: 3
   m_nmaNavAgent: {fileID: 0}
 --- !u!114 &5735426847372648649
 MonoBehaviour:
@@ -237,6 +237,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 366251012f8832545858a3f4ee0edac6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: dec438cdcfd8d5d48903af08964cb946, type: 2}
     - target: {fileID: 2300000, guid: 366251012f8832545858a3f4ee0edac6, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -245,10 +249,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 49e20d267b7fe6e468a56cf987853361, type: 2}
-    - target: {fileID: 9500000, guid: 366251012f8832545858a3f4ee0edac6, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: dec438cdcfd8d5d48903af08964cb946, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 366251012f8832545858a3f4ee0edac6, type: 3}
 --- !u!1 &1430412745 stripped
@@ -339,14 +339,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5851138281045622747}
     m_Modifications:
-    - target: {fileID: 100000, guid: 4b7e21cf6d9d2714f92e6a7f57739ebf, type: 3}
-      propertyPath: m_Name
-      value: anim_skeletonAttackMelee
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 4b7e21cf6d9d2714f92e6a7f57739ebf, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4b7e21cf6d9d2714f92e6a7f57739ebf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.00053191115
@@ -401,6 +393,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4b7e21cf6d9d2714f92e6a7f57739ebf, type: 3}
       propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4b7e21cf6d9d2714f92e6a7f57739ebf, type: 3}
+      propertyPath: m_Name
+      value: anim_skeletonAttackMelee
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4b7e21cf6d9d2714f92e6a7f57739ebf, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 4b7e21cf6d9d2714f92e6a7f57739ebf, type: 3}
@@ -492,10 +492,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3796076821189246405}
     m_Modifications:
-    - target: {fileID: 100000, guid: 4b7e21cf6d9d2714f92e6a7f57739ebf, type: 3}
-      propertyPath: m_Name
-      value: anim_skeletonAttackMelee (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4b7e21cf6d9d2714f92e6a7f57739ebf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -539,6 +535,10 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 4b7e21cf6d9d2714f92e6a7f57739ebf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4b7e21cf6d9d2714f92e6a7f57739ebf, type: 3}
+      propertyPath: m_Name
+      value: anim_skeletonAttackMelee (1)
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 4b7e21cf6d9d2714f92e6a7f57739ebf, type: 3}
       propertyPath: m_Materials.Array.data[0]

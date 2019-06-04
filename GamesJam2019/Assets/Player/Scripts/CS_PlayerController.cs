@@ -300,7 +300,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         }
     }
 
-    public void TakeDamage(int a_damageToTake, GameObject a_instigator)
+    public void TakeDamage(float a_fDamageToTake, GameObject a_goInstigator)
     {
         if (!bStunned && !bInvunerable)
         {
@@ -317,7 +317,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         bInvunerable = false;
     }
 
-    public void Heal(int a_healthToHeal, GameObject a_instigator)
+    public void Heal(float a_fHealthToHeal, GameObject a_goInstigator)
     {
         throw new System.NotImplementedException();
     }
