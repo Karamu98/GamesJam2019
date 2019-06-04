@@ -12,7 +12,7 @@ public class CS_AIProjectile : MonoBehaviour
     private Transform m_tTarget;
 
     [SerializeField]
-    private float m_fDamage;
+    private int attackDamage;
 
     [SerializeField]
     private float m_fLifeTime = 2.0f;
@@ -40,24 +40,24 @@ public class CS_AIProjectile : MonoBehaviour
         {
             if (collision.gameObject.GetComponent<IDamageable>() != null)
             {
-                collision.gameObject.GetComponent<IDamageable>().TakeDamage(m_fDamage, gameObject);
+                collision.gameObject.GetComponent<IDamageable>().TakeDamage(attackDamage, gameObject);
             }
         }
         else if (collision.gameObject.GetComponent<PlayerPlatform>() != null)
         {
             if (collision.gameObject.GetComponent<IDamageable>() != null)
             {
-                collision.gameObject.GetComponent<IDamageable>().TakeDamage(m_fDamage, gameObject);
+                collision.gameObject.GetComponent<IDamageable>().TakeDamage(attackDamage, gameObject);
             }
         }
         Destroy(gameObject);
     }
 
-    public void Initialise(Transform a_tTarget, float a_fDamage)
+    public void Initialise(Transform a_tTarget, int a_damage)
     {
         m_tTarget = a_tTarget;
         transform.LookAt(m_tTarget);
-        m_fDamage = a_fDamage;
+        attackDamage = a_damage;
 
         m_fSpeed = Vector3.Distance(a_tTarget.position, transform.position) * 2.0f;
 
