@@ -1074,7 +1074,7 @@ MonoBehaviour:
   meleeAngle: 45
   rangeAttackSpeed: 0.5
   rangedDamage: 10
-  knockDownTime: 5
+  knockDownTime: 1
   arrowPrefab: {fileID: 4060082066417744728, guid: 333d054fe2417994f8c5403e27b55c17,
     type: 3}
   g: {fileID: 4958824407907257363, guid: 4326026a70c387a4eb4154bd5cb51f12, type: 3}

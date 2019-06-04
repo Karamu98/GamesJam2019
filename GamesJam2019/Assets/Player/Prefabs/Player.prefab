@@ -369,7 +369,7 @@ MonoBehaviour:
   meleeAngle: 45
   rangeAttackSpeed: 0.5
   rangedDamage: 10
-  knockDownTime: 5
+  knockDownTime: 1
   arrowPrefab: {fileID: 4060082066417744728, guid: 333d054fe2417994f8c5403e27b55c17,
     type: 3}
   g: {fileID: 4958824407907257363, guid: 4326026a70c387a4eb4154bd5cb51f12, type: 3}
@@ -597,7 +597,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8138579504616592208}
-  - component: {fileID: 8138579504607313072}
+  - component: {fileID: 8716245350907113736}
   m_Layer: 0
   m_Name: anim_characARunTorso
   m_TagString: Untagged
@@ -620,7 +620,7 @@ Transform:
   m_Father: {fileID: 6569635308808984285}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &8138579504607313072
+--- !u!95 &8716245350907113736
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
