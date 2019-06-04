@@ -35,5 +35,4 @@ public class CS_AIBasicSkeleton : CS_AIBase
         }
     }
 
-
 }

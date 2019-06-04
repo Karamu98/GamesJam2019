@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CS_AIBase : MonoBehaviour
+public class CS_AIBase : MonoBehaviour, IDamageable
 {
     [Header("Settings")]
     [SerializeField]
@@ -301,5 +301,13 @@ public class CS_AIBase : MonoBehaviour
         return m_iDamageDealtPerHit;
     }
 
+    public void TakeDamage(int a_damageToTake, GameObject a_instigator)
+    {
+        DamageAgent(a_damageToTake, a_instigator);
+    }
 
+    public void Heal(int a_healthToHeal, GameObject a_instigator)
+    {
+        
+    }
 }

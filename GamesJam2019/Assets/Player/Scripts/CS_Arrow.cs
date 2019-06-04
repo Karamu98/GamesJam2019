@@ -49,7 +49,7 @@ public class CS_Arrow : MonoBehaviour
     {
         if(!hasHit && collision.gameObject.GetComponent<CS_Arrow>() == null)
         {
-            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+            CS_AIBase damageable = collision.gameObject.GetComponent<CS_AIBase>();
             if (damageable != null)
             {
                 damageable.TakeDamage(arrowDamage, shooter);
@@ -64,7 +64,7 @@ public class CS_Arrow : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // If we hit something damageable
-        IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+        CS_AIBase damageable = other.gameObject.GetComponent<CS_AIBase>();
         if (damageable != null)
         {
             // Damage and destroy

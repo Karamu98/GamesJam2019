@@ -62,7 +62,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_fSpeed: 5
   m_tTarget: {fileID: 0}
-  arrowDamage: 50
+  arrowDamage: 1000
 --- !u!54 &6390331134751611694
 Rigidbody:
   m_ObjectHideFlags: 0
