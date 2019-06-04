@@ -1,8 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -15,6 +14,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private AudioClip selectSound;
 
     bool[] readyPlayers = new bool[2];
+
 
     private void Update()
     {

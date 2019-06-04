@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class SessionManager : MonoBehaviour
 {
     public static SessionManager sessionManager;
+    private bool shouldLoadScene = false;
 
     private void Awake()
     {
@@ -26,16 +27,27 @@ public class SessionManager : MonoBehaviour
     {
         // Save score to highscores
 
-        sessionManager.StartCoroutine(LoseGame()); // Needs a gameobject to start coroutine
+        Debug.Log("Game Over");
+        sessionManager.StartCoroutine(sessionManager.Wait()); // Needs a gameobject to start coroutine
     }
 
-    private static IEnumerator LoseGame()
+    private void Update()
+    {
+        if(shouldLoadScene)
+        {
+            SceneManager.LoadScene("Menu");
+            shouldLoadScene = false;
+        }
+    }
+
+    private IEnumerator Wait()
     {
         // Play sad music and shit
 
         // Wait for sounds and a bit for dramatic effect
         yield return new WaitForSeconds(3);
 
-        SceneManager.LoadScene("Menu");
+        shouldLoadScene = true;
+        StopAllCoroutines();
     }
 }
