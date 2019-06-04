@@ -313,7 +313,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
 
     private IEnumerator IfInvnuerable()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2.5f);
         bInvunerable = false;
     }
 
