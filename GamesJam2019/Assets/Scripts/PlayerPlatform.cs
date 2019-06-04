@@ -4,34 +4,56 @@ using UnityEngine;
 
 public class PlayerPlatform : MonoBehaviour, IDamageable
 {
+    [SerializeField] private Mesh[] shipMeshes;
+    [SerializeField] private int maxHealth = 100;
 
-    private float m_fHealth;
-    [SerializeField]
-    private float m_fMaxHealth = 100.0f;
-
+    private int health;
+    private MeshFilter meshFilter;
+  
 
     public void AddNewPart(int a_iPartHealth)
     {
-        m_fHealth += a_iPartHealth;
+        health += a_iPartHealth;
     }
 
     private void Awake()
     {
-        m_fHealth = m_fMaxHealth;
+        health = maxHealth;
+        meshFilter = GetComponent<MeshFilter>();
+
+
     }
 
-    public void TakeDamage(float a_fDamageToTake, GameObject a_goInstigator)
+    private void Update()
     {
-        m_fHealth -= a_fDamageToTake;
+        float percentage = health / maxHealth;
+
+        if(percentage >= 0.7f)
+        {
+            meshFilter.mesh = shipMeshes[2];
+        }
+        else if(percentage >= 0.5f && percentage < 0.7f)
+        {
+            meshFilter.mesh = shipMeshes[1];
+        }
+        else
+        {
+            meshFilter.mesh = shipMeshes[0];
+        }
+    }
+
+    public void TakeDamage(int a_damageToTake, GameObject a_instigator)
+    {
+        health -= a_damageToTake;
 
         // Death
-        if (m_fHealth <= 0)
+        if (health <= 0)
         {
             SessionManager.OnPlayerLose();
         }
     }
 
-    public void Heal(float a_fHealthToHeal, GameObject a_goInstigator)
+    public void Heal(int a_healthToHeal, GameObject a_instigator)
     {
         throw new System.NotImplementedException();
     }
