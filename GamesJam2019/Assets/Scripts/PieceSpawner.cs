@@ -81,6 +81,7 @@ public class PieceSpawner : MonoBehaviour
 
             if (randObj <= pieceSpawnChance)
             {
+                Debug.Log("PieceSpawn");
                 // Spawn boat piece
                 int randDebris = Random.Range(0, piecesToSpawn.Count);
                 newObj = Instantiate(piecesToSpawn[randDebris]);
@@ -90,9 +91,9 @@ public class PieceSpawner : MonoBehaviour
                 // Spawn debris
                 int randDebris = Random.Range(0, spawnableObjects.Count);
                 newObj = Instantiate(spawnableObjects[randDebris]);
-
-                newObj.transform.position = new Vector3(randPos.x, gameObject.transform.position.y, randPos.y);
             }
+
+            newObj.transform.position = new Vector3(randPos.x, gameObject.transform.position.y, randPos.y);
         }
     }
 

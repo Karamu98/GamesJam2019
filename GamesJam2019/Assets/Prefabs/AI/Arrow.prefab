@@ -243,7 +243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_fSpeed: 10
   m_tTarget: {fileID: 0}
-  m_fDamage: 0
+  attackDamage: 5
   m_fLifeTime: 2
 --- !u!1001 &2116944373835305347
 PrefabInstance:

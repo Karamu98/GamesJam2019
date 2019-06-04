@@ -27,7 +27,7 @@ public class Debris : MonoBehaviour
 
     private IEnumerator Sink()
     {
-        GetComponent<Collider>().enabled = false;
+        GetComponentInChildren<Collider>().enabled = false;
         yield return new WaitForSeconds(7);
 
         Destroy(gameObject);

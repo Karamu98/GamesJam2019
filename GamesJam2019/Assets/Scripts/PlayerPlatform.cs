@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class PlayerPlatform : MonoBehaviour, IDamageable
 {
-    [SerializeField] private Mesh[] shipMeshes;
+    [SerializeField] private GameObject[] shipPrefabs;
     [SerializeField] private int maxHealth = 100;
 
     private int health;
-    private MeshFilter meshFilter;
+    private GameObject mesh;
+    private int currentMesh = -1;
   
 
     public void AddNewPart(int a_iPartHealth)
@@ -19,26 +20,32 @@ public class PlayerPlatform : MonoBehaviour, IDamageable
     private void Awake()
     {
         health = maxHealth;
-        meshFilter = GetComponent<MeshFilter>();
+        MakeMesh(2);
+    }
 
-
+    private void MakeMesh(int a_selection)
+    {
+        Destroy(mesh);
+        mesh = Instantiate(shipPrefabs[a_selection]);
+        mesh.transform.position = gameObject.transform.position;
+        currentMesh = a_selection;
     }
 
     private void Update()
     {
-        float percentage = health / maxHealth;
+        float percentage = (float)health / (float)maxHealth;
 
-        if(percentage >= 0.7f)
+        if(percentage >= 0.6f && currentMesh != 2)
         {
-            meshFilter.mesh = shipMeshes[2];
+            MakeMesh(2);
         }
-        else if(percentage >= 0.5f && percentage < 0.7f)
+        else if(percentage >= 0.3f && percentage < 0.6f && currentMesh != 1)
         {
-            meshFilter.mesh = shipMeshes[1];
+            MakeMesh(1);
         }
-        else
+        else if(percentage < 0.3f && currentMesh != 0)
         {
-            meshFilter.mesh = shipMeshes[0];
+            MakeMesh(0);
         }
     }
 
