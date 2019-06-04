@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CS_AISpawner : MonoBehaviour
 {
@@ -55,6 +56,12 @@ public class CS_AISpawner : MonoBehaviour
     [SerializeField]
     private List<GameObject> m_lgoEnemyPrefabList = new List<GameObject>();
 
+    [Header("References")]
+    [SerializeField]
+    private Text m_tRoundText;
+
+    [SerializeField]
+    private List<GameObject> m_lgoSpawnPoints = new List<GameObject>();
     // Start is called before the first frame update
     private void Start()
     {
@@ -79,9 +86,11 @@ public class CS_AISpawner : MonoBehaviour
     {
         m_eCurrentGameState = eGAMESTATES.MIDROUND;//only run once, set gamestate
         m_iCurrentRound += 1;
+        m_tRoundText.text = "Round: " + m_iCurrentRound.ToString();
+
         m_iMaxEnemies = (int)(Mathf.Pow(m_iCurrentRound, 2) * m_fSpawnMultiplier) + m_iBaseNumberOfAgentsPerRound;//Calculate new zombie amount for next round
 
-        m_fSpawnDelay = Mathf.Clamp((m_iBaseNumberOfAgentsPerRound - (Mathf.Pow(m_iCurrentRound, m_fDelayDecayMultiplier))), 0.5f, 100.0f);//Calculate new zombie spawn delay
+        m_fSpawnDelay = Mathf.Clamp((m_fBaseAgentSpawnDelay - (Mathf.Pow(m_iCurrentRound, m_fDelayDecayMultiplier))), 0.5f, 100.0f);//Calculate new zombie spawn delay
 
         m_iSpawnedAgents = 0;
     }
@@ -126,6 +135,7 @@ public class CS_AISpawner : MonoBehaviour
     private void SpawnAgent()
     {
         GameObject goZombie = Instantiate(m_lgoEnemyPrefabList[Random.Range(0, m_lgoEnemyPrefabList.Count)]);
+        goZombie.transform.position = m_lgoSpawnPoints[Random.Range(0, m_lgoSpawnPoints.Count)].transform.position;
         m_iCurrentAgents += 1;
         m_iSpawnedAgents += 1;
     }
