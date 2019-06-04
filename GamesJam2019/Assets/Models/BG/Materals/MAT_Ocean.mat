@@ -26,8 +26,8 @@ Material:
     m_Floats:
     - _Amplitude: 0
     - _Opacity: 0.8
-    - _RippleDisolve: 5.9
-    - _RippleScale: 40.04
+    - _RippleDisolve: 7
+    - _RippleScale: 12.84
     - _RippleSpeed: 1
     m_Colors:
     - _PrimaryColour: {r: 0, g: 0.9357328, b: 1.5198522, a: 0}
