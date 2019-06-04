@@ -8,7 +8,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     [Header("Player Settings")]
     [SerializeField] private float moveSpeed = 3;
     [SerializeField] private float meleeSpeed = 0.05f;
-    [SerializeField] private int meleeDamage = 10;
+    [SerializeField] private int meleeDamage = 50;
     [SerializeField] private float meleeAngle = 45;
     [SerializeField] private float rangeAttackSpeed = 0.2f;
     [SerializeField] private int rangedDamage = 10;
@@ -75,6 +75,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
                 //Jump
                 gameObject.GetComponent<Animator>().SetBool("bJump", true);
                 gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bJump", true);
+                nav.AddForce(Vector3.up * 3000);
                 bJumping = true;
                 SetBoxCentre(new Vector3(0, 0.023f, 0));
                 GetComponent<Rigidbody>().useGravity = false;
