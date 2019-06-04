@@ -25,9 +25,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Amplitude: 0
-    - _Opacity: 0.743
-    - _RippleDisolve: 13.6
-    - _RippleScale: 40.23
+    - _Opacity: 0.8
+    - _RippleDisolve: 5.9
+    - _RippleScale: 40.04
     - _RippleSpeed: 1
     m_Colors:
     - _PrimaryColour: {r: 0, g: 0.9357328, b: 1.5198522, a: 0}
