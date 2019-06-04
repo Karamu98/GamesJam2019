@@ -11,7 +11,7 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private int meleeDamage = 50;
     [SerializeField] private float meleeAngle = 45;
     [SerializeField] private float rangeAttackSpeed = 0.2f;
-    [SerializeField] private int rangedDamage = 10;
+    [SerializeField] private int rangedDamage = 1000;
     [SerializeField] private float knockDownTime = 1;
 
 

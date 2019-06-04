@@ -368,7 +368,7 @@ MonoBehaviour:
   meleeDamage: 10
   meleeAngle: 45
   rangeAttackSpeed: 0.5
-  rangedDamage: 10
+  rangedDamage: 1000
   knockDownTime: 1
   bInvunerable: 0
   arrowPrefab: {fileID: 4060082066417744728, guid: 333d054fe2417994f8c5403e27b55c17,

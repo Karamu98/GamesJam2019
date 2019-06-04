@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1340690171175639734}
   - component: {fileID: 5282585444830280514}
   - component: {fileID: 3908312628405593066}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AIRanged
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_fMaxHealth: 100
   m_fAttackRange: 10
-  m_fDamageDealtPerHit: 5
+  m_iDamageDealtPerHit: 0
   m_fAttackDelay: 3
   m_nmaNavAgent: {fileID: 0}
   m_goArrowPrefab: {fileID: 5435858807677652263, guid: 7045905ddbd726346bce7353ca69b227,

@@ -14,12 +14,20 @@ public class CS_Arrow : MonoBehaviour
     [SerializeField]
     private int arrowDamage;
 
+    [SerializeField]
+    private float m_fFieldOfView = 90.0f;
+
+    [SerializeField]
+    private LayerMask m_lmEnemyMask;
+
     private Rigidbody m_rbRigidBodyRef;
 
     private GameObject shooter;
     Vector3 v3Look;
 
     private bool hasHit = false;
+
+    private bool m_bTarget = false;
 
     private float fLifeTimer;
     // Start is called before the first frame update
@@ -38,11 +46,17 @@ public class CS_Arrow : MonoBehaviour
 
     private void Update()
     {        
-        fLifeTimer -= Time.deltaTime;
-        if(fLifeTimer <= 0)
+        if(!m_bTarget)
         {
-            Destroy(gameObject);
+            m_rbRigidBodyRef.velocity = v3Look * m_fSpeed;
+
         }
+        else
+        {
+            m_rbRigidBodyRef.velocity = transform.forward * m_fSpeed;
+
+        }
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -94,11 +108,62 @@ public class CS_Arrow : MonoBehaviour
 
     public void Initialise(Transform a_tTarget, int a_damage, GameObject a_gPlayer)
     {
+
+        Debug.Log("Shoot arrrow");
         m_tTarget = a_tTarget;
+        transform.forward = a_gPlayer.transform.forward;
+
+        Transform tNewTarget = GetTarget(a_gPlayer);
+        if(tNewTarget == null)
+        {
+            Debug.Log("null");
+
+            v3Look = -m_tTarget.forward * 3;
+            transform.rotation = m_tTarget.rotation;
+        }
+        else
+        {
+            m_tTarget = tNewTarget;
+            transform.LookAt(tNewTarget);
+            m_bTarget = true;
+
+            m_fSpeed = Vector3.Distance(m_tTarget.position, transform.position) * 5.0f;
+
+        }
+
+
         shooter = a_gPlayer;
-        v3Look = -m_tTarget.forward * 3;
-        transform.rotation = m_tTarget.rotation;
+        
         GetComponent<Rigidbody>().freezeRotation = true;
         arrowDamage = a_damage;
+
+        //Destroy(gameObject, fLifeTimer);
+
+    }
+
+
+
+    private Transform GetTarget(GameObject a_goPlayer)
+    {
+        CS_AIBase[] csEnemyList = FindObjectsOfType<CS_AIBase>();
+        foreach (CS_AIBase csEnemy in csEnemyList)
+        {
+            Vector3 v3DirToTarget = -(a_goPlayer.transform.position - csEnemy.transform.position ).normalized;
+            if(Vector3.Angle(a_goPlayer.transform.position, csEnemy.transform.position) < m_fFieldOfView * 0.5f)
+            {
+                //if(Physics.Raycast(transform.position, v3DirToTarget, 1000.0f, m_lmEnemyMask))
+                //{
+                    Debug.Log("Found Enemy");
+
+                    return csEnemy.transform;
+                //}
+            }
+        }
+
+
+
+
+
+        return null;
     }
 }
