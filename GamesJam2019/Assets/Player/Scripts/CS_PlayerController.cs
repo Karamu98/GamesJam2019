@@ -94,8 +94,8 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
                 {
                     //Drop
                     gameObject.transform.GetChild(2).GetComponentInChildren<Animator>().SetBool("bPickUp", false);
-                    ObjectPickedUp.GetComponent<PlatformPiece>().Drop();
                     bPickUp = false;
+                    CheckForRaft();
                 }
 
             }
@@ -136,6 +136,19 @@ public class CS_PlayerController : MonoBehaviour, IDamageable
         SetBoxCentre(Vector3.zero);
         GetComponent<Rigidbody>().useGravity = true;
 
+    }
+
+    private void CheckForRaft()
+    {
+        GameObject Raft = FindObjectOfType<PlayerPlatform>().gameObject;
+        if(Vector3.Distance(gameObject.transform.position, Raft.transform.position) < 1.5f)
+        {
+            ObjectPickedUp.GetComponent<PlatformPiece>().AttachToPlatform();
+        }
+        else
+        {
+            ObjectPickedUp.GetComponent<PlatformPiece>().Drop();
+        }
     }
 
     private void ResetPlayer()
