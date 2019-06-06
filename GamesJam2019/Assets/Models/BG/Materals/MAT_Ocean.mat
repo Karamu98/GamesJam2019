@@ -24,11 +24,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Amplitude: 0
-    - _Opacity: 0.8
-    - _RippleDisolve: 7
-    - _RippleScale: 12.84
-    - _RippleSpeed: 1
+    - _Amplitude: 20.59
+    - _Opacity: 0.847
+    - _RippleDisolve: 5.7
+    - _RippleScale: 28.56
+    - _RippleSpeed: 2
     m_Colors:
     - _PrimaryColour: {r: 0, g: 0.9357328, b: 1.5198522, a: 0}
     - _SecondaryColour: {r: 1, g: 0, b: 0, a: 0}

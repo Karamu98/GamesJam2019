@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public enum PlayerStates : byte
 {
     None = 0,
@@ -11,7 +12,6 @@ public enum PlayerStates : byte
     IsJumping = 8
 
 }
-
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private GameObject feetObject;
     [SerializeField] private GameObject itemLocation;
     [SerializeField] private GameObject projectile;
+    [SerializeField] private GameObject gunPosition;
 
     [Header("Player Settings")]
     [SerializeField] private float playerGracePeriod = 5;
@@ -36,10 +37,12 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private float knockDownTime = 1;
     [SerializeField] private float jumpPower = 3;
 
-    private int health;
+    [Header("Controls")]
+    [SerializeField] private XboxControllerButton shootButton = XboxControllerButton.RT;
+    [SerializeField] private XboxControllerButton meleeButton = XboxControllerButton.RB;
+    [SerializeField] private XboxControllerButton jumpButton = XboxControllerButton.LT;
+    [SerializeField] private XboxControllerButton pickupButton = XboxControllerButton.LB;
 
-    // Damage
-    [SerializeField] private int damage = 10;
 
     // State control
     private bool canRangeAttack = false;
@@ -48,12 +51,16 @@ public class PlayerController : MonoBehaviour, IDamageable
     private bool isInWater = false;
     private bool isCarrying = false;
     private bool isOnGround = false;
+    private int health;
 
     // Cache
     private Rigidbody rBody;
     private byte playerNumber;
     private Vector3 moveVelocity = Vector3.zero;
     private float floorDist;
+    GameObject pickedUpItem = null;
+    Vector3 startPos;
+    private PickUpVolume pickUpVolume;
 
     // Timers
     private float rangeAttackTimer = 0;
@@ -66,10 +73,14 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         rBody = GetComponent<Rigidbody>();
 
-        Bounds bounds = GetComponent<Collider>().bounds;
+        Bounds bounds = GetComponentInChildren<Collider>().bounds;
         floorDist = bounds.center.y - bounds.min.y;
-    }
 
+        health = maxHealth;
+
+        startPos = transform.position;
+        pickUpVolume = GetComponentInChildren<PickUpVolume>();
+    }
 
     private void Update()
     {
@@ -84,6 +95,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         HandleMovement();
         HandleJumping();
         HandleWeapons();
+        HandlePickup();
     }
 
     private void FixedUpdate()
@@ -98,13 +110,23 @@ public class PlayerController : MonoBehaviour, IDamageable
         moveVelocity = Vector3.zero;
     }
 
+    public static byte GetPlayerCount()
+    {
+        return playerCount;
+    }
+
+    public byte GetPlayerNumber()
+    {
+        return playerNumber;
+    }
+
     private void Shoot()
     {
         GameObject newProj = Instantiate(projectile);
-        newProj.transform.position = transform.position + -bodyObject.transform.forward * 2;
+        newProj.transform.position = gunPosition.transform.position + -gunPosition.transform.forward * 2;
         newProj.transform.forward = -bodyObject.transform.forward;
 
-        newProj.GetComponent<Arrow>().Initialise(damage, gameObject);
+        newProj.GetComponent<Arrow>().Initialise(rangedDamage, gameObject);
 
         canRangeAttack = false;
         rangeAttackTimer = rangeAttackSpeed;
@@ -129,7 +151,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if(IsOnGround())
         {
-            if(Input.GetAxisRaw("LT" + playerNumber) > 0)
+            ;
+            if(Input.GetAxisRaw(XboxController.GetButtonName(jumpButton) + playerNumber) > 0)
             {
                 moveVelocity.y = 1;
             }
@@ -137,6 +160,14 @@ public class PlayerController : MonoBehaviour, IDamageable
         else
         {
             moveVelocity.y = 0;
+        }
+    }
+
+    private void HandleMelee()
+    {
+        if(canMeleeAttack && Input.GetAxisRaw(XboxController.GetButtonName(meleeButton) + playerNumber) > 0.0f)
+        {
+
         }
     }
 
@@ -176,10 +207,44 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void HandleWeapons()
     {
-        if(canRangeAttack && Input.GetAxisRaw("RT" + playerNumber) > 0.0f)
+        if(canRangeAttack && Input.GetAxisRaw(XboxController.GetButtonName(shootButton) + playerNumber) > 0.0f)
         {
             Shoot();
         }
+    }
+
+    private void HandlePickup()
+    {
+        if(Input.GetButtonDown(XboxController.GetButtonName(pickupButton) + playerNumber) && !isCarrying)
+        {
+            GameObject item = pickUpVolume.PickupItem();
+            if(item != null)
+            {
+                pickedUpItem = item;
+                pickedUpItem.transform.parent = itemLocation.transform;
+                pickedUpItem.transform.localPosition = Vector3.zero;
+                pickedUpItem.GetComponent<PickUpItem>().HoldItem(true);
+                isCarrying = true;
+            }
+            else
+            {
+                pickedUpItem = null;
+                isCarrying = false;
+            }
+        }
+        else if(Input.GetButtonDown(XboxController.GetButtonName(pickupButton) + playerNumber) && isCarrying)
+        {
+            pickedUpItem.transform.parent = null;
+            pickedUpItem.GetComponent<PickUpItem>().HoldItem(false);
+            pickedUpItem = null;
+            isCarrying = false;
+        }
+    }
+
+    private void Die()
+    {
+        transform.position = startPos;
+        health = maxHealth;
     }
 
 
@@ -192,7 +257,29 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void TakeDamage(int a_damageToTake, GameObject a_instigator)
     {
-        throw new System.NotImplementedException();
+        if(a_instigator == gameObject)
+        {
+            health -= a_damageToTake;
+            return;
+        }
+
+        PlayerController otherPlayer = a_instigator.GetComponent<PlayerController>();
+        if (otherPlayer != null)
+        {
+            health -= Mathf.FloorToInt(a_damageToTake * 0.5f);
+            Debug.Log("PVP: " + a_instigator.name + " delt " + Mathf.FloorToInt(a_damageToTake * 0.5f) + " damage to " + gameObject.name);
+        }
+        else
+        {
+            health -= a_damageToTake;
+        }
+
+        if(health <= 0)
+        {
+            Debug.Log("PVP: " + a_instigator.name + " killed " + gameObject.name);
+            Die();
+        }
+
     }
 
     #endregion
